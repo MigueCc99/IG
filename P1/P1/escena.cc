@@ -84,15 +84,23 @@ void Escena::dibujar()
          }
 
          if(ajedrez){
-            if(objeto_seleccionado == 1)
-               cubo->draw_ajedrez(inmediato);
-            else if(objeto_seleccionado == 2)
+            if(objeto_seleccionado == 1){
+               glPushMatrix();
+                  glTranslatef(-25,-25,-25);
+                  cubo->draw_ajedrez(inmediato);
+               glPopMatrix();
+            }else if(objeto_seleccionado == 2){
                tetraedro->draw_ajedrez(inmediato);
+            }
          }else{
-            if(objeto_seleccionado == 1)
-               cubo->draw(inmediato, tipo_dibujado_actual, color, false);
-            else if(objeto_seleccionado == 2)
+            if(objeto_seleccionado == 1){
+               glPushMatrix();
+                  glTranslatef(-25,-25,-25);
+                  cubo->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();
+            }else if(objeto_seleccionado == 2){
                tetraedro->draw(inmediato, tipo_dibujado_actual, color, false);
+            }
          }
 
       }
