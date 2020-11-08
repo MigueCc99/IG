@@ -93,11 +93,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
 
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri );
 
-<<<<<<< HEAD
       glPolygonMode( GL_FRONT, GL_FILL );
-=======
-      glPolygonMode( GL_FRONT, visualizacion );
->>>>>>> 4780687ffe79d08231598283b37b67079cdc33bc
       glPointSize(5.0);
 
       glDrawElements( GL_TRIANGLES, 3* f.size(), GL_UNSIGNED_INT, 0 ) ;
