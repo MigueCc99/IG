@@ -22,6 +22,11 @@ Escena::Escena()
     // crear los objetos de la escena....
    cubo = new Cubo(50);
    tetraedro = new Tetraedro();
+   beethoven = new ObjPLY("plys/beethoven.ply");
+   //peon = new ObjRevolucion("plys/peon.ply",20,true);
+   //cono = new Cono();
+   //cilindro = new Cilindro();
+   //esfera = new Esfera();
 
 }
 
@@ -82,7 +87,8 @@ void Escena::dibujar()
                   color = 2;
                break;
          }
-
+// Escena P1
+/*
          if(ajedrez){
             if(objeto_seleccionado == 1){
                glPushMatrix();
@@ -102,10 +108,21 @@ void Escena::dibujar()
                tetraedro->draw(inmediato, tipo_dibujado_actual, color, false);
             }
          }
-
+*/
+// Escena P2
+         if(ajedrez){
+            glPushMatrix();
+               glScalef(2,2,2);
+               beethoven->draw_ajedrez(inmediato);
+            glPopMatrix();
+         }else{
+            glPushMatrix();
+               glScalef(2,2,2);
+               beethoven->draw(inmediato, tipo_dibujado_actual, color, false);
+            glPopMatrix();
+         }
       }
    }
-    
 }
 
 //**************************************************************************
