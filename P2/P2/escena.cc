@@ -23,10 +23,10 @@ Escena::Escena()
    cubo = new Cubo(50);
    tetraedro = new Tetraedro();
    beethoven = new ObjPLY("plys/beethoven.ply");
-   //peon = new ObjRevolucion("plys/peon.ply",20,true);
-   //cono = new Cono();
-   //cilindro = new Cilindro();
-   //esfera = new Esfera();
+   peon = new ObjRevolucion("plys/peon.ply",20,true);
+   cono = new Cono();
+   cilindro = new Cilindro();
+   esfera = new Esfera();
 
 }
 
@@ -111,15 +111,51 @@ void Escena::dibujar()
 */
 // Escena P2
          if(ajedrez){
+            /*
             glPushMatrix();
                glScalef(2,2,2);
                beethoven->draw_ajedrez(inmediato);
             glPopMatrix();
+            glPushMatrix();
+               glScalef(20,20,20);
+               peon->draw_ajedrez(inmediato);
+            glPopMatrix();
+            glPushMatrix();
+               glScalef(20,20,20);
+               cono->draw_ajedrez(inmediato);
+            glPopMatrix();        
+            glPushMatrix();
+               glScalef(20,20,20);
+               cilindro->draw_ajedrez(inmediato);
+            glPopMatrix();
+            */ 
+            glPushMatrix();
+               glScalef(20,20,20);
+               esfera->draw_ajedrez(inmediato);
+            glPopMatrix();
          }else{
+            /*
             glPushMatrix();
                glScalef(2,2,2);
                beethoven->draw(inmediato, tipo_dibujado_actual, color, false);
             glPopMatrix();
+            glPushMatrix();
+               glScalef(20,20,20);
+               peon->draw(inmediato, tipo_dibujado_actual, color, false);
+            glPopMatrix();
+            glPushMatrix();
+               glScalef(20,20,20);
+               cono->draw(inmediato, tipo_dibujado_actual, color, false);
+            glPopMatrix();
+            glPushMatrix();
+               glScalef(20,20,20);
+               cilindro->draw(inmediato, tipo_dibujado_actual, color, false);
+            glPopMatrix();  
+            */
+            glPushMatrix();
+               glScalef(20,20,20);
+               esfera->draw(inmediato, tipo_dibujado_actual, color, false);
+            glPopMatrix();  
          }
       }
    }
