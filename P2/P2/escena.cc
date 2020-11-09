@@ -113,48 +113,55 @@ void Escena::dibujar()
 // Escena P2
          if(escena_seleccionada == 2){
             if(ajedrez){
-               /*
+               
                glPushMatrix();
+                  glTranslatef(-65,0,0);
                   glScalef(2,2,2);
                   beethoven->draw_ajedrez(inmediato);
                glPopMatrix();
                glPushMatrix();
+                  glTranslatef(-35,0,0);
                   glScalef(20,20,20);
                   peon->draw_ajedrez(inmediato);
                glPopMatrix();
                glPushMatrix();
+                  glTranslatef(0,0,0);
                   glScalef(20,20,20);
                   cono->draw_ajedrez(inmediato);
                glPopMatrix();        
                glPushMatrix();
+                  glTranslatef(50,0,0);
                   glScalef(20,20,20);
                   cilindro->draw_ajedrez(inmediato);
                glPopMatrix();
-               */ 
                glPushMatrix();
+                  glTranslatef(110,0,0);
                   glScalef(20,20,20);
                   esfera->draw_ajedrez(inmediato);
                glPopMatrix();
             }else{
-               /*
                glPushMatrix();
+                  glTranslatef(-65,0,0);
                   glScalef(2,2,2);
                   beethoven->draw(inmediato, tipo_dibujado_actual, color, false);
                glPopMatrix();
                glPushMatrix();
+                  glTranslatef(-35,0,0);
                   glScalef(20,20,20);
                   peon->draw(inmediato, tipo_dibujado_actual, color, false);
                glPopMatrix();
                glPushMatrix();
+                  glTranslatef(0,0,0);
                   glScalef(20,20,20);
                   cono->draw(inmediato, tipo_dibujado_actual, color, false);
                glPopMatrix();
                glPushMatrix();
+                  glTranslatef(50,0,0);
                   glScalef(20,20,20);
                   cilindro->draw(inmediato, tipo_dibujado_actual, color, false);
                glPopMatrix();  
-               */
                glPushMatrix();
+                  glTranslatef(110,0,0);
                   glScalef(20,20,20);
                   esfera->draw(inmediato, tipo_dibujado_actual, color, false);
                glPopMatrix();  
