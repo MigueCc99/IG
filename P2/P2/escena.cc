@@ -88,74 +88,77 @@ void Escena::dibujar()
                break;
          }
 // Escena P1
-/*
-         if(ajedrez){
-            if(objeto_seleccionado == 1){
-               glPushMatrix();
-                  glTranslatef(-25,-25,-25);
-                  cubo->draw_ajedrez(inmediato);
-               glPopMatrix();
-            }else if(objeto_seleccionado == 2){
-               tetraedro->draw_ajedrez(inmediato);
-            }
-         }else{
-            if(objeto_seleccionado == 1){
-               glPushMatrix();
-                  glTranslatef(-25,-25,-25);
-                  cubo->draw(inmediato, tipo_dibujado_actual, color, false);
-               glPopMatrix();
-            }else if(objeto_seleccionado == 2){
-               tetraedro->draw(inmediato, tipo_dibujado_actual, color, false);
+         if(escena_seleccionada == 1){
+            if(ajedrez){
+               if(objeto_seleccionado == 1){
+                  glPushMatrix();
+                     glTranslatef(-25,-25,-25);
+                     cubo->draw_ajedrez(inmediato);
+                  glPopMatrix();
+               }else if(objeto_seleccionado == 2){
+                  tetraedro->draw_ajedrez(inmediato);
+               }
+            }else{
+               if(objeto_seleccionado == 1){
+                  glPushMatrix();
+                     glTranslatef(-25,-25,-25);
+                     cubo->draw(inmediato, tipo_dibujado_actual, color, false);
+                  glPopMatrix();
+               }else if(objeto_seleccionado == 2){
+                  tetraedro->draw(inmediato, tipo_dibujado_actual, color, false);
+               }
             }
          }
-*/
+
 // Escena P2
-         if(ajedrez){
-            /*
-            glPushMatrix();
-               glScalef(2,2,2);
-               beethoven->draw_ajedrez(inmediato);
-            glPopMatrix();
-            glPushMatrix();
-               glScalef(20,20,20);
-               peon->draw_ajedrez(inmediato);
-            glPopMatrix();
-            glPushMatrix();
-               glScalef(20,20,20);
-               cono->draw_ajedrez(inmediato);
-            glPopMatrix();        
-            glPushMatrix();
-               glScalef(20,20,20);
-               cilindro->draw_ajedrez(inmediato);
-            glPopMatrix();
-            */ 
-            glPushMatrix();
-               glScalef(20,20,20);
-               esfera->draw_ajedrez(inmediato);
-            glPopMatrix();
-         }else{
-            /*
-            glPushMatrix();
-               glScalef(2,2,2);
-               beethoven->draw(inmediato, tipo_dibujado_actual, color, false);
-            glPopMatrix();
-            glPushMatrix();
-               glScalef(20,20,20);
-               peon->draw(inmediato, tipo_dibujado_actual, color, false);
-            glPopMatrix();
-            glPushMatrix();
-               glScalef(20,20,20);
-               cono->draw(inmediato, tipo_dibujado_actual, color, false);
-            glPopMatrix();
-            glPushMatrix();
-               glScalef(20,20,20);
-               cilindro->draw(inmediato, tipo_dibujado_actual, color, false);
-            glPopMatrix();  
-            */
-            glPushMatrix();
-               glScalef(20,20,20);
-               esfera->draw(inmediato, tipo_dibujado_actual, color, false);
-            glPopMatrix();  
+         if(escena_seleccionada == 2){
+            if(ajedrez){
+               /*
+               glPushMatrix();
+                  glScalef(2,2,2);
+                  beethoven->draw_ajedrez(inmediato);
+               glPopMatrix();
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  peon->draw_ajedrez(inmediato);
+               glPopMatrix();
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  cono->draw_ajedrez(inmediato);
+               glPopMatrix();        
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  cilindro->draw_ajedrez(inmediato);
+               glPopMatrix();
+               */ 
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  esfera->draw_ajedrez(inmediato);
+               glPopMatrix();
+            }else{
+               /*
+               glPushMatrix();
+                  glScalef(2,2,2);
+                  beethoven->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  peon->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  cono->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  cilindro->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();  
+               */
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  esfera->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();  
+            }
          }
       }
    }
@@ -195,8 +198,12 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          // ESTAMOS EN MODO SELECCION DE DIBUJADO
          modoMenu=SELDIBUJADO;
          break ;
+       case 'E' :
+         // ESTAMOS EN MODO SELECCION DE ESCENA
+         modoMenu=SELESCENA;
+         break ;
          // COMPLETAR con los diferentes opciones de teclado
-      
+
       // SELECCION DE OBJETO
        case 'C' :
          if(modoMenu == SELOBJETO){
@@ -213,12 +220,16 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case '1' :
          if(modoMenu == SELDIBUJADO){
             inmediato = true;
+         }else if(modoMenu == SELESCENA){
+            escena_seleccionada = 1;
          }
        break;
        case '2' :
          if(modoMenu == SELDIBUJADO){
             inmediato = false;
-         } 
+         }else if(modoMenu == SELESCENA){
+            escena_seleccionada = 2;
+         }
        break;        
             
       // SELECCION VISUALIZACIÓN
@@ -336,7 +347,8 @@ void Escena::pintaMenu(menu tipo){
 
   switch (tipo){
     case (NADA):
-    std::cout << "O -> Selección de objeto\n";   
+    std::cout << "O -> Selección de objeto\n"; 
+    std::cout << "E -> Selección de escena\n";  
     std::cout << "V -> Selección de modo de visualización\n";
     std::cout << "D -> Selección de modo de dibujado\n";
     std::cout << "Q -> Salir del programa\n";
@@ -350,6 +362,11 @@ void Escena::pintaMenu(menu tipo){
     }else{
       std::cout << "Tetraedro seleccionado\n";
     }
+    break;
+    case (SELESCENA):
+    std::cout << "1 -> Seleccionar escena P1\n";
+    std::cout << "2 -> Seleccionar escena P2\n";
+    std::cout << "Q -> Salir del menú\n";
     break;
     case (SELVISUALIZACION):
     std::cout << "S -> Visualización en sólido\n";

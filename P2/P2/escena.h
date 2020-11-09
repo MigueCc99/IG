@@ -11,7 +11,7 @@
 #include "cilindro.h"
 #include "esfera.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
 
 class Escena
@@ -49,6 +49,7 @@ class Escena
       
       std::vector<bool> tipo_dibujado;
       GLenum tipo_dibujado_actual;
+      int escena_seleccionada = 3;
       int objeto_seleccionado = 3;
    // Objetos de la escena
    Ejes ejes;
