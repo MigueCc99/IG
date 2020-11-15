@@ -10,6 +10,9 @@
 #include "cono.h"
 #include "cilindro.h"
 #include "esfera.h"
+#include "luz.h"
+#include "luzposicional.h"
+#include "luzposicional.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
@@ -46,6 +49,8 @@ class Escena
       bool inmediato = true;
    // SELECTOR DE FORMA DE DIBUJADO
       bool ajedrez = false;
+      bool luces = false;
+      bool isluz0, isluz1 = false;
       
       std::vector<bool> tipo_dibujado;
       GLenum tipo_dibujado_actual;
@@ -60,6 +65,18 @@ class Escena
    Cono * cono = nullptr;
    Cilindro * cilindro = nullptr;
    Esfera * esfera = nullptr;
+   ObjRevolucion * peonBlanco = nullptr;
+   ObjRevolucion * peonNegro = nullptr;
+
+   // Luces
+   LuzPosicional *luz0 = nullptr;
+   LuzPosicional *luz1 = nullptr;
+
+   // Materiales
+   Material * m0 = nullptr;
+   Material * m1 = nullptr;
+
+   float incremento_luz = -700;
    
    public:
 

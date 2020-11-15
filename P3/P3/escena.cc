@@ -19,7 +19,7 @@ Escena::Escena()
     ejes.changeAxisSize( 5000 );
     tipo_dibujado.resize(3);
 
-    // crear los objetos de la escena....
+   // crear los objetos de la escena....
    cubo = new Cubo(50);
    tetraedro = new Tetraedro();
    beethoven = new ObjPLY("plys/beethoven.ply");
@@ -27,7 +27,19 @@ Escena::Escena()
    cono = new Cono();
    cilindro = new Cilindro();
    esfera = new Esfera();
+   peonBlanco = new ObjRevolucion("plys/peon.ply",20,true);
+   peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
 
+   // Crear las luces
+   luz0 = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
+   luz1 = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
+
+   // Crea los materiales
+   m0 = new Material(Tupla4f(0.3,0.3,0.3,1.0),Tupla4f(1.0,1.0,1.0,1.0),Tupla4f(1.0,1.0,1.0,1.0), 10.0);
+   m1 = new Material(Tupla4f(0.0,0.0,0.0,1.0),Tupla4f(0.0,0.0,0.0,1.0),Tupla4f(0.0,0.0,0.0,1.0), 10.0);
+
+   peonBlanco->setMaterial(m0);
+   peonNegro->setMaterial(m0);
 }
 
 //**************************************************************************

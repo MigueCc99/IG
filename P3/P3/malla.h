@@ -11,6 +11,7 @@
 #define MALLA3D_H_INCLUDED
 
 #include "aux.h"
+#include "material.h"
 
 // *****************************************************************************
 //
@@ -24,7 +25,7 @@ class Malla3D
    unsigned id_vbo_ver = 0;
    unsigned id_vbo_tri = 0;
    unsigned id_vbo_col = 0;
-   //unsigned id_vbo_nor = 0;
+   unsigned id_vbo_nor = 0;
 
    Malla3D();
 
@@ -40,6 +41,9 @@ class Malla3D
    void draw(bool inmediato, GLenum tipo, int color, bool seleccion) ;
    void draw_ajedrez(bool inmediato) ;
    void inicializa_colores() ;
+
+   void setMaterial(Material * mat);
+   void setMaterialSeleccionado(Material * mat);
 
    // Función VBO
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
@@ -60,6 +64,9 @@ class Malla3D
    std::vector<Tupla3f> color_seleccion;
    std::vector<Tupla3f> color_actual;
    // completar: tabla de colores, tabla de normales de vértices
+
+   Material * m;
+   Material * material_seleccionado;
 
 } ;
 

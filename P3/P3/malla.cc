@@ -45,6 +45,13 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
       // (son tuplas de 3 valores float, sin espacio entre ellas)
       glVertexPointer( 3, GL_FLOAT, 0, v.data() );
 
+      if(glIsEnabled(GL_LIGHTNING)){
+         if(nv.size()==0)
+            calcular_normales();
+         glNormalPointer(GL_FLOAT,0,nv.data());
+         glEnableClientState(GL_NORMAL_ARRAY);
+      }
+
       glPolygonMode ( GL_FRONT, visualizacion);
       glPointSize(5.0);
       glEnableClientState( GL_COLOR_ARRAY) ;
@@ -55,6 +62,9 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
 
       // deshabilitar el array de vértices
       glDisableClientState( GL_VERTEX_ARRAY );
+
+      if(glIsEnabled(GL_LIGHTING))
+         glDisableClientState(GL_NORMAL_ARRAY);
    }
 
 }
@@ -132,17 +142,31 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
       glDisableClientState( GL_VERTEX_ARRAY );
 
    }else{
+
+      if(glIsEnabled(GL_LIGHTING))
+         calcular_normales();
+
       id_vbo_ver = 0, id_vbo_tri = 0, id_vbo_col = 0;
-      if (id_vbo_ver == 0 || id_vbo_tri == 0 || id_vbo_col == 0){
+      if (id_vbo_ver == 0 || id_vbo_tri == 0 || id_vbo_col == 0 || id_vbo_nor == 0){
          id_vbo_ver = CrearVBO (GL_ARRAY_BUFFER, (3*v.size())*sizeof(float), v.data() );
          id_vbo_tri = CrearVBO (GL_ELEMENT_ARRAY_BUFFER, (3*f.size())*sizeof(int), f.data() );
          id_vbo_col = CrearVBO (GL_ARRAY_BUFFER, (3*color_actual.size())*sizeof(float), color_actual.data() );
+         if(glIsEnabled(GL_LIGHTING))
+            id_vbo_nor = CrearVBO(GL_ARRAY_BUFFER, (3*nv.size())*sizeof(float),nv.data());
       }
 
       glBindBuffer( GL_ARRAY_BUFFER, id_vbo_ver );
       glEnableClientState( GL_VERTEX_ARRAY );
       glVertexPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0);
+
+      if(glIsEnabled(GL_LIGHTING)){
+         glEnableClientState( GL_NORMAL_ARRAY );
+         glBindBuffer( GL_ARRAY_BUFFER, id_vbo_nor);
+
+         glNormalPointer( GL_FLOAT, 0, 0 );
+         GlBindBuffer( GL_ARRAY_BUFFER, 0);
+      }
 
       glEnableClientState( GL_COLOR_ARRAY );
       glBindBuffer( GL_COLOR_ARRAY, 0 );
@@ -158,6 +182,9 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
       glDisableClientState( GL_VERTEX_ARRAY );
+
+      if(glIsEnabled(GL_LIGHTING))
+         glDisableClientState( GL_NORMAL_ARRAY );
    }
 }
 // -----------------------------------------------------------------------------
@@ -185,6 +212,8 @@ void Malla3D::draw(bool inmediato, GLenum tipo, int color, bool seleccion)
             color_actual = cyan;
             break;
       }
+
+   m->aplicar();
 
    if(inmediato){
       draw_ModoInmediato(false);
@@ -252,3 +281,37 @@ void Malla3D::inicializa_colores(){
    }
 }
 
+void Malla3D::calcular_normales(){
+   Tupla3f a;
+   Tupla3f b;
+   Tupla3f mc;
+
+   nv.resize(v.size());
+
+   for(int i=0; i<nv.size(); i++){
+      nv[i] = {0.0,0.0,0.0};
+   }
+
+   for(int i=0; i<f.size(); i++){
+      a = v[f[i](1)] - v[f[i](0)];
+      b = v[f[i](2)] - v[f[i](0)];
+
+      mc = a.cross(b);
+
+      nv[f[i](0)] = nv[f[i](0)] + mc.normalized();
+      nv[f[i](1)] = nv[f[i](1)] + mc.normalized();
+      nv[f[i](2)] = nv[f[i](2)] + mc.normalized();      
+   }
+
+   for(int i=0; i<nv.size(); i++){
+      nv[i] = nv[i].normalized();
+   }
+}
+
+void Malla3D::setMaterial(Material * mat){
+   m = mat;
+}
+
+void Malla3D::setMaterialSeleccionado(Material * mat){
+   material_seleccionado = mat;
+}
