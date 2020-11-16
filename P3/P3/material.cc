@@ -14,5 +14,5 @@ void Material::aplicar(){
     glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,ambiente);
     glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,especular);
     glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,difuso);
-    glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,brillo);
+    glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,brillo);
 }

@@ -31,15 +31,16 @@ Escena::Escena()
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
 
    // Crear las luces
-   luz0 = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
-   luz1 = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
+	//Crear las luces
+    luz0 = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
+    luz1 = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
 
    // Crea los materiales
    m0 = new Material(Tupla4f(0.3,0.3,0.3,1.0),Tupla4f(1.0,1.0,1.0,1.0),Tupla4f(1.0,1.0,1.0,1.0), 10.0);
    m1 = new Material(Tupla4f(0.0,0.0,0.0,1.0),Tupla4f(0.0,0.0,0.0,1.0),Tupla4f(0.0,0.0,0.0,1.0), 10.0);
 
    peonBlanco->setMaterial(m0);
-   peonNegro->setMaterial(m0);
+   peonNegro->setMaterial(m1);
 }
 
 //**************************************************************************
@@ -179,6 +180,57 @@ void Escena::dibujar()
                glPopMatrix();  
             }
          }
+// Escena P3
+         if(escena_seleccionada == 3){
+
+            glDisable(GL_LIGHT0);
+            glDisable(GL_LIGHT1);
+            glDisable(GL_LIGHTING);
+
+            if(luces)
+               glEnable(GL_LIGHTING);
+
+            if(is_luz0){
+               glPushMatrix();
+                  glTranslatef(incremento_luz,300,0);
+                  luz0->activar();
+               glPopMatrix();
+               if(incremento_luz < 700)
+                  incremento_luz += 1;
+               else
+                  incremento_luz = -700;
+            }
+
+            if(is_luz1){
+               luz1->activar();
+            }
+
+            if(ajedrez){
+               glPushMatrix();
+                  glTranslatef(-35,0,0);
+                  glScalef(20,20,20);
+                  peonBlanco->draw_ajedrez(inmediato);
+               glPopMatrix();    
+               glPushMatrix();
+                  glTranslatef(35,0,0);
+                  glScalef(20,20,20);
+                  peonNegro->draw_ajedrez(inmediato);
+               glPopMatrix();              
+            }
+            else{
+               glPushMatrix();
+                  glTranslatef(-35,0,0);
+                  glScalef(20,20,20);
+                  peonBlanco->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(35,0,0);
+                  glScalef(20,20,20);
+                  peonNegro->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();
+            }         
+         }
+
       }
    }
 }
@@ -250,11 +302,17 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             escena_seleccionada = 2;
          }
        break;        
-            
+       case '3' :
+         if(modoMenu == SELESCENA){
+            escena_seleccionada = 3;
+         }
+       break;  
+
       // SELECCION VISUALIZACIÓN
        case 'P' :
          if(modoMenu == SELVISUALIZACION){
             ajedrez = false;
+            luces = false;
             if(tipo_dibujado[0] == false)
                tipo_dibujado[0] = true;
             else
@@ -264,6 +322,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case 'L' :
          if(modoMenu == SELVISUALIZACION){
             ajedrez = false;
+            luces = false;
             if(tipo_dibujado[1] == false)
                tipo_dibujado[1] = true;
             else
@@ -273,6 +332,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case 'S' :
          if(modoMenu == SELVISUALIZACION){
             ajedrez = false;
+            luces = false;
             if(tipo_dibujado[2] == false)
                tipo_dibujado[2] = true;
             else
@@ -281,12 +341,66 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        break;   
        case 'A' :
          if(modoMenu == SELVISUALIZACION){
+            luces = false;
             if(ajedrez == false)
                ajedrez = true;
-            else
+            else 
                ajedrez = false;
-         }         
+         }else if(modoMenu == SELUCES){
+            variar_alfa = true;
+         }            
        break;   
+       case 'I' :
+         if(modoMenu == SELVISUALIZACION){
+            if(luces){
+               modoMenu = SELVISUALIZACION;
+               luces = false;
+            }else{
+               modoMenu = SELUCES;
+               luces = true;
+            }
+         }         
+       break; 
+       case '0' :
+         if(modoMenu == SELUCES){
+            if(!is_luz0){
+               is_luz0 = true;
+            }else{
+               is_luz0 = false;
+            }
+         }         
+       break; 
+       case 'B' :
+         if(modoMenu == SELUCES){
+            variar_beta = true;
+         }         
+       break; 
+       case '<' :
+         if(modoMenu == SELUCES){
+            if(variar_alfa){
+               luz1->variarAnguloAlpha(-0.1);
+               glDisable(GL_LIGHT1);
+            }else if(variar_beta){
+               luz1->variarAnguloBeta(-0.1);
+               glDisable(GL_LIGHT1);
+            }
+            luz1->activar();
+         }         
+       break; 
+       break; 
+       case '>' :
+         if(modoMenu == SELUCES){
+            if(variar_alfa){
+               luz1->variarAnguloAlpha(0.1);
+               glDisable(GL_LIGHT1);
+            }else if(variar_beta){
+               luz1->variarAnguloBeta(0.1);
+               glDisable(GL_LIGHT1);
+            }
+            luz1->activar();
+         }         
+       break; 
+
    }
 
    pintaMenu(modoMenu);
@@ -385,6 +499,7 @@ void Escena::pintaMenu(menu tipo){
     case (SELESCENA):
     std::cout << "1 -> Seleccionar escena P1\n";
     std::cout << "2 -> Seleccionar escena P2\n";
+    std::cout << "2 -> Seleccionar escena P3\n";
     std::cout << "Q -> Salir del menú\n";
     break;
     case (SELVISUALIZACION):
@@ -392,6 +507,7 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "L -> Visualización en líneas\n";
     std::cout << "P -> Visualización en puntos\n";
     std::cout << "A -> Visualización en ajedrez\n";
+    std::cout << "I -> Activar iluminación\n";
     std::cout << "Q -> Salir del menú\n";
     break;
     case (SELDIBUJADO):
@@ -402,6 +518,22 @@ void Escena::pintaMenu(menu tipo){
     }else{
       std::cout << "Seleccionado el modo diferido\n";
     }
+    std::cout << "Q -> Salir del menú\n";
+    break;
+    case (SELUCES):
+    std::cout << "0 -> Activar luz posicional\n";
+    std::cout << "1 -> Activar luz direccional\n";
+    std::cout << "A -> Seleccionar angulo alfa de luz 1\n";
+    std::cout << "B -> Seleccionar angulo beta de luz 1\n";
+    std::cout << "Q -> Salir del menú\n";
+    if(variar_alfa){
+       std::cout << "Variando el angulo alfa\n";
+    }else if(variar_beta){
+       std::cout << "Variando el angulo beta\n";
+    }
+    std::cout << "> -> Incrementar ángulo seleccionado\n";
+    std::cout << "< -> Decrementar ángulo seleccionado\n";
+    std::cout << "I -> Desactivar iluminación\n";
     std::cout << "Q -> Salir del menú\n";
     break;
   }   

@@ -12,9 +12,9 @@
 #include "esfera.h"
 #include "luz.h"
 #include "luzposicional.h"
-#include "luzposicional.h"
+#include "luzdireccional.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
 
 class Escena
@@ -50,11 +50,12 @@ class Escena
    // SELECTOR DE FORMA DE DIBUJADO
       bool ajedrez = false;
       bool luces = false;
-      bool isluz0, isluz1 = false;
+      bool is_luz0, is_luz1 = false;
+      bool variar_alfa, variar_beta = false;
       
       std::vector<bool> tipo_dibujado;
       GLenum tipo_dibujado_actual;
-      int escena_seleccionada = 3;
+      int escena_seleccionada = 4;
       int objeto_seleccionado = 3;
    // Objetos de la escena
    Ejes ejes;
@@ -70,7 +71,7 @@ class Escena
 
    // Luces
    LuzPosicional *luz0 = nullptr;
-   LuzPosicional *luz1 = nullptr;
+   LuzDireccional *luz1 = nullptr;
 
    // Materiales
    Material * m0 = nullptr;

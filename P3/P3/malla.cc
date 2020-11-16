@@ -45,7 +45,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
       // (son tuplas de 3 valores float, sin espacio entre ellas)
       glVertexPointer( 3, GL_FLOAT, 0, v.data() );
 
-      if(glIsEnabled(GL_LIGHTNING)){
+      if(glIsEnabled(GL_LIGHTING)){
          if(nv.size()==0)
             calcular_normales();
          glNormalPointer(GL_FLOAT,0,nv.data());
@@ -165,7 +165,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
          glBindBuffer( GL_ARRAY_BUFFER, id_vbo_nor);
 
          glNormalPointer( GL_FLOAT, 0, 0 );
-         GlBindBuffer( GL_ARRAY_BUFFER, 0);
+         glBindBuffer( GL_ARRAY_BUFFER, 0);
       }
 
       glEnableClientState( GL_COLOR_ARRAY );
@@ -213,7 +213,8 @@ void Malla3D::draw(bool inmediato, GLenum tipo, int color, bool seleccion)
             break;
       }
 
-   m->aplicar();
+   if(glIsEnabled(GL_LIGHTING))
+      m->aplicar();
 
    if(inmediato){
       draw_ModoInmediato(false);
