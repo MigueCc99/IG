@@ -61,6 +61,8 @@ class Escena
    Cilindro * cilindro = nullptr;
    Esfera * esfera = nullptr;
    
+   bool tapas = true;
+   
    public:
 
     Escena();

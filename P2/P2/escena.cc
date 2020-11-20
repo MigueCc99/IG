@@ -122,22 +122,22 @@ void Escena::dibujar()
                glPushMatrix();
                   glTranslatef(-35,0,0);
                   glScalef(20,20,20);
-                  peon->draw_ajedrez(inmediato);
+                  peon->draw_ajedrez(inmediato,tapas);
                glPopMatrix();
                glPushMatrix();
                   glTranslatef(0,0,0);
                   glScalef(20,20,20);
-                  cono->draw_ajedrez(inmediato);
+                  cono->draw_ajedrez(inmediato,tapas);
                glPopMatrix();        
                glPushMatrix();
                   glTranslatef(50,0,0);
                   glScalef(20,20,20);
-                  cilindro->draw_ajedrez(inmediato);
+                  cilindro->draw_ajedrez(inmediato,tapas);
                glPopMatrix();
                glPushMatrix();
                   glTranslatef(110,0,0);
                   glScalef(20,20,20);
-                  esfera->draw_ajedrez(inmediato);
+                  esfera->draw_ajedrez(inmediato,tapas);
                glPopMatrix();
             }else{
                glPushMatrix();
@@ -148,22 +148,22 @@ void Escena::dibujar()
                glPushMatrix();
                   glTranslatef(-35,0,0);
                   glScalef(20,20,20);
-                  peon->draw(inmediato, tipo_dibujado_actual, color, false);
+                  peon->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
                glPopMatrix();
                glPushMatrix();
                   glTranslatef(0,0,0);
                   glScalef(20,20,20);
-                  cono->draw(inmediato, tipo_dibujado_actual, color, false);
+                  cono->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
                glPopMatrix();
                glPushMatrix();
                   glTranslatef(50,0,0);
                   glScalef(20,20,20);
-                  cilindro->draw(inmediato, tipo_dibujado_actual, color, false);
+                  cilindro->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
                glPopMatrix();  
                glPushMatrix();
                   glTranslatef(110,0,0);
                   glScalef(20,20,20);
-                  esfera->draw(inmediato, tipo_dibujado_actual, color, false);
+                  esfera->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
                glPopMatrix();  
             }
          }
@@ -220,7 +220,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case 'T' :
          if(modoMenu == SELOBJETO){
             objeto_seleccionado = 2;
-         } 
+         }else if(modoMenu == SELVISUALIZACION){
+            tapas = !tapas;
+            cilindro->setTapas(tapas);  
+         }  
        break;       
 
       // SELECCION DE DIBUJADO
@@ -380,6 +383,7 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "L -> Visualización en líneas\n";
     std::cout << "P -> Visualización en puntos\n";
     std::cout << "A -> Visualización en ajedrez\n";
+    std::cout << "T -> Gestión de tapas: " << tapas << std::endl;
     std::cout << "Q -> Salir del menú\n";
     break;
     case (SELDIBUJADO):
