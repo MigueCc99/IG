@@ -96,9 +96,8 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
       glVertexPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0);
 
-      glEnableClientState( GL_COLOR_ARRAY );
-      glBindBuffer( GL_COLOR_ARRAY, 0 );
-      glColorPointer( 3, GL_FLOAT, 0, c2.data() );
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_col );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri );
@@ -124,9 +123,8 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
       glVertexPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0);
 
-      glEnableClientState( GL_COLOR_ARRAY );
-      glBindBuffer( GL_COLOR_ARRAY, 0 );
-      glColorPointer( 3, GL_FLOAT, 0, c3.data() );
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_col );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri );
@@ -156,9 +154,9 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
       }
 
       glBindBuffer( GL_ARRAY_BUFFER, id_vbo_ver );
-      glEnableClientState( GL_VERTEX_ARRAY );
       glVertexPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0);
+      glEnableClientState( GL_VERTEX_ARRAY );
 
       if(glIsEnabled(GL_LIGHTING)){
          glEnableClientState( GL_NORMAL_ARRAY );
@@ -168,9 +166,8 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
          glBindBuffer( GL_ARRAY_BUFFER, 0);
       }
 
-      glEnableClientState( GL_COLOR_ARRAY );
-      glBindBuffer( GL_COLOR_ARRAY, 0 );
-      glColorPointer( 3, GL_FLOAT, 0, color_actual.data() );
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_col );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri );
