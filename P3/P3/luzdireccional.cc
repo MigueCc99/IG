@@ -1,39 +1,31 @@
 #include "luzdireccional.h"
+#include <cmath>
 
 LuzDireccional::LuzDireccional( Tupla3f direccion, GLenum idLuzOpenGL, Tupla4f colorAmbiente, Tupla4f colorEspecular, Tupla4f colorDifuso){
-    posicion = Tupla4f(direccion(0), direccion(1), direccion(2), 0.0);
+    this->alpha = direccion[0];
+    this->beta = direccion[1];
 
-	alpha = atan( sqrt(direccion(0)*direccion(0) + direccion(1)*direccion(1) ) / direccion(2) );
-	beta = atan( direccion(1)/direccion(0) );
-	radio = sqrt( direccion(0)*direccion(0)+direccion(1)*direccion(1)+direccion(2)*direccion(2) );
-
-    id = idLuzOpenGL;
-
+    this->id = idLuzOpenGL;
     this->colorAmbiente = colorAmbiente;
-    this->colorDifuso = colorDifuso;
     this->colorEspecular = colorEspecular;
+    this->colorDifuso = colorDifuso;
+
+    calcularPosiciones();
+    this->posicion[3] = 0;
 }
 
 void LuzDireccional::variarAnguloAlpha(float incremento){
-    if(alpha+incremento >= 0 && alpha+incremento <= 360){
-        alpha += incremento;
-        calcularPosicion();
-    }
+    this->alpha += incremento;
+    calcularPosiciones();
 }
 
 void LuzDireccional::variarAnguloBeta(float incremento){
-    if(beta+incremento >= 0 && beta+incremento <= 360){
-        beta += incremento;
-        calcularPosicion();
-    }
+    this->beta += incremento;
+    calcularPosiciones();
 }
 
-void LuzDireccional::calcularPosicion(){
-    float x,y,z;
-
-    x = radio*sin(alpha)*cos(beta);
-    y = radio*sin(alpha)*sin(beta);
-    z = radio*cos(alpha);
-
-    posicion = Tupla4f(x,y,z,0.0);
+void LuzDireccional::calcularPosiciones(){
+    this->posicion[0] = sin(alpha*(M_PI/180));
+    this->posicion[1] = sin(beta*(M_PI/180)); 
+    this->posicion[2] = cos(alpha*(M_PI/180))*cos(beta*(M_PI/180));   
 }

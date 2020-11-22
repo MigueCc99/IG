@@ -327,6 +327,9 @@ void ObjRevolucion::draw(bool inmediato, GLenum tipo, int color, bool seleccion,
             break;
       }
 
+   if(glIsEnabled(GL_LIGHTING))
+      m->aplicar();
+
    if(inmediato){
       draw_ModoInmediato(false,tapas);
    }else{

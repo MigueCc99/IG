@@ -222,7 +222,6 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             objeto_seleccionado = 2;
          }else if(modoMenu == SELVISUALIZACION){
             tapas = !tapas;
-            cilindro->setTapas(tapas);  
          }  
        break;       
 

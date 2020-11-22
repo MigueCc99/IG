@@ -43,7 +43,6 @@ class Malla3D
    void inicializa_colores() ;
 
    void setMaterial(Material * mat);
-   void setMaterialSeleccionado(Material * mat);
 
    // Función VBO
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
@@ -66,7 +65,6 @@ class Malla3D
    // completar: tabla de colores, tabla de normales de vértices
 
    Material * m;
-   Material * material_seleccionado;
 
 } ;
 

@@ -76,8 +76,10 @@ class Escena
    // Materiales
    Material * m0 = nullptr;
    Material * m1 = nullptr;
+   Material * m2 = nullptr;
 
-   float incremento_luz = -700;
+   float incremento_luz = -700;   
+   bool tapas = true;
    
    public:
 
