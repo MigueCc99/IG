@@ -38,9 +38,13 @@ class ObjRevolucion : public Malla3D
 protected:
 
     int figura_sin_tapas;
+    int ejeRevolucion = 0;
     bool tapas;
     std::vector<Tupla3f> aux;
     int num_instancias;
+
+    std::vector<Tupla3f> voltearVertices(const std::vector<Tupla3f> &perfil_original);
+
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
     void crearTapaSuperior();
     void crearTapaInferior();
