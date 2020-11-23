@@ -43,7 +43,12 @@ Escena::Escena()
 
    m0 = new Material(difuso1, especular1, ambiente1, 0.1*128.0);
    m1 = new Material(difuso2, especular2, ambiente2, 0.01*128.0);
+   m2 = new Material(difuso3, especular3, ambiente3, 0.6*128.0);
 
+   tetraedro->setMaterial(m2);
+   cono->setMaterial(m2);
+   cilindro->setMaterial(m2);
+   esfera->setMaterial(m2);
    peonBlanco->setMaterial(m0);
    peonNegro->setMaterial(m1);
 }
@@ -132,7 +137,6 @@ void Escena::dibujar()
 // Escena P2
          if(escena_seleccionada == 2){
             if(ajedrez){
-               
                glPushMatrix();
                   glTranslatef(-65,0,0);
                   glScalef(2,2,2);
@@ -193,6 +197,26 @@ void Escena::dibujar()
 
             if(ajedrez){
                glPushMatrix();
+                  glTranslatef(-90,0,0);
+                  glScalef(0.5,0.5,0.5);
+                  tetraedro->draw_ajedrez(inmediato);
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(0,0,0);
+                  glScalef(20,20,20);
+                  cono->draw_ajedrez(inmediato,tapas);
+               glPopMatrix();        
+               glPushMatrix();
+                  glTranslatef(85,0,0);
+                  glScalef(20,20,20);
+                  cilindro->draw_ajedrez(inmediato,tapas);
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(160,0,0);
+                  glScalef(20,20,20);
+                  esfera->draw_ajedrez(inmediato,tapas);
+               glPopMatrix();
+               glPushMatrix();
                   glTranslatef(-35,0,0);
                   glScalef(20,20,20);
                   peonBlanco->draw_ajedrez(inmediato, tapas);
@@ -203,6 +227,26 @@ void Escena::dibujar()
                   peonNegro->draw_ajedrez(inmediato, tapas);
                glPopMatrix();   
             }else{
+               glPushMatrix();
+                  glTranslatef(-90,0,0);
+                  glScalef(0.5,0.5,0.5);
+                  tetraedro->draw(inmediato, tipo_dibujado_actual, color, false);
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(0,0,0);
+                  glScalef(20,20,20);
+                  cono->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(85,0,0);
+                  glScalef(20,20,20);
+                  cilindro->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
+               glPopMatrix();  
+               glPushMatrix();
+                  glTranslatef(160,0,0);
+                  glScalef(20,20,20);
+                  esfera->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
+               glPopMatrix();  
                glPushMatrix();
                   glTranslatef(-35,0,0);
                   glScalef(20,20,20);
@@ -346,7 +390,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case 'I' :
          if(modoMenu == SELVISUALIZACION){
             modoIluminacion = !modoIluminacion;
-            if(luces){
+            if(modoIluminacion){
                std::cout << "\nIluminación activada\n";
             }else{
                std::cout << "\nIluminación desactivada\n";
@@ -470,6 +514,7 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "Q -> Salir del programa\n";
     break;
     case (SELOBJETO):
+    std::cout << "Modo Objeto - Opciones Disponibles\n";
     std::cout << "C -> Seleccionar cubo\n";   
     std::cout << "T -> Seleccionar tetraedro\n";
     std::cout << "Q -> Salir del menú\n";
@@ -480,6 +525,7 @@ void Escena::pintaMenu(menu tipo){
     }
     break;
     case (SELESCENA):
+    std::cout << "Modo Escena - Opciones Disponibles\n";
     std::cout << "1 -> Seleccionar escena P1\n";
     std::cout << "2 -> Seleccionar escena P2\n";
     std::cout << "3 -> Seleccionar escena P3\n";
@@ -493,15 +539,37 @@ void Escena::pintaMenu(menu tipo){
     }
     break;
     case (SELVISUALIZACION):
-    std::cout << "S -> Visualización en sólido\n";
-    std::cout << "L -> Visualización en líneas\n";
-    std::cout << "P -> Visualización en puntos\n";
-    std::cout << "A -> Visualización en ajedrez\n";
-    std::cout << "T -> Gestión de tapas: " << tapas << std::endl;
-    std::cout << "I -> Activar iluminación\n";
-    std::cout << "Q -> Salir del menú\n";
+
+    if(!modoIluminacion){
+      std::cout << "Modo de Visualización - Opciones Disponibles\n";
+      std::cout << "S -> Visualización en sólido\n";
+      std::cout << "L -> Visualización en líneas\n";
+      std::cout << "P -> Visualización en puntos\n";
+      std::cout << "A -> Visualización en ajedrez\n";
+      std::cout << "T -> Gestión de tapas: " << tapas << std::endl;
+      std::cout << "I -> Activar iluminación\n";
+      std::cout << "Q -> Salir del menú\n";
+    }
+    else{
+      std::cout << "Modo Iluminación - Opciones Disponibles\n";
+      std::cout << "0 -> Activar luz posicional\n";
+      std::cout << "1 -> Activar luz direccional\n";
+      std::cout << "A -> Seleccionar angulo alfa de luz 1\n";
+      std::cout << "B -> Seleccionar angulo beta de luz 1\n";
+      std::cout << "Q -> Salir del menú\n";
+      if(variar_alfa){
+         std::cout << "Variando el angulo alfa\n";
+      }else if(variar_beta){
+         std::cout << "Variando el angulo beta\n";
+      }
+      std::cout << "> -> Incrementar ángulo seleccionado\n";
+      std::cout << "< -> Decrementar ángulo seleccionado\n";
+      std::cout << "I -> Desactivar iluminación\n";
+      std::cout << "Q -> Salir del menú\n";
+    }
     break;
     case (SELDIBUJADO):
+    std::cout << "Modo Dibujado - Opciones Disponibles\n";
     std::cout << "1 -> Modo inmediato\n";
     std::cout << "2 -> Modo diferido\n";
     if (inmediato){
@@ -511,28 +579,12 @@ void Escena::pintaMenu(menu tipo){
     }
     std::cout << "Q -> Salir del menú\n";
     break;
-    case (SELUCES):
-    std::cout << "0 -> Activar luz posicional\n";
-    std::cout << "1 -> Activar luz direccional\n";
-    std::cout << "A -> Seleccionar angulo alfa de luz 1\n";
-    std::cout << "B -> Seleccionar angulo beta de luz 1\n";
-    std::cout << "Q -> Salir del menú\n";
-    if(variar_alfa){
-       std::cout << "Variando el angulo alfa\n";
-    }else if(variar_beta){
-       std::cout << "Variando el angulo beta\n";
-    }
-    std::cout << "> -> Incrementar ángulo seleccionado\n";
-    std::cout << "< -> Decrementar ángulo seleccionado\n";
-    std::cout << "I -> Desactivar iluminación\n";
-    std::cout << "Q -> Salir del menú\n";
-    break;
-  }   
+  }
 }
 
 
 void Escena::activacionLuces(){
-   if(luces){
+   if(modoIluminacion){
       if(!glIsEnabled(GL_LIGHTING)){
          glEnable(GL_LIGHTING);
       }
