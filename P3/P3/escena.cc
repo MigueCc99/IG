@@ -31,8 +31,8 @@ Escena::Escena()
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
 
    // Creamos las luces
-   luz0 = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
-   luz1 = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
+   cuadroLuces[0] = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));;
+   cuadroLuces[1] = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
 
    // Creamos los materiales
 
@@ -85,6 +85,7 @@ void Escena::dibujar()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
+   glDisable(GL_LIGHTING);
     ejes.draw();
     // COMPLETAR
     //   Dibujar los diferentes elementos de la escena
@@ -188,27 +189,7 @@ void Escena::dibujar()
 // Escena P2
          if(escena_seleccionada == 3){  
 
-            if(luces){
-               glEnable(GL_LIGHTING);
-            }else{
-               glDisable(GL_LIGHT0);
-               glDisable(GL_LIGHT1);
-               glDisable(GL_LIGHTING);
-            }
-
-            if(is_luz0){
-               glPushMatrix();
-                  glTranslatef(incremento_luz,300,0);
-                  luz0->activar();
-               glPopMatrix();
-               if(incremento_luz < 700)
-                  incremento_luz += 1;
-               else
-                  incremento_luz = -700;
-            }
-
-            if(is_luz1)
-               luz1->activar();
+            activacionLuces();
 
             if(ajedrez){
                glPushMatrix();
@@ -298,12 +279,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             inmediato = true;
          }else if(modoMenu == SELESCENA){
             escena_seleccionada = 1;
-         }else if(modoMenu == SELUCES){
-            if(!is_luz1){
-               is_luz1 = true;
-            }else{
-               is_luz1 = false;
-            }
+         }else if(modoMenu == SELVISUALIZACION && modoIluminacion){
+            luces[1] = !luces[1];
+            std::cout << "\n\tLuz 1 activada\n";
          }
        break;
        case '2' :
@@ -321,8 +299,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             
       // SELECCION VISUALIZACIÓN
        case 'P' :
-         if(modoMenu == SELVISUALIZACION){
+         if(modoMenu == SELVISUALIZACION && !modoIluminacion){
             ajedrez = false;
+            modoIluminacion = false;
             if(tipo_dibujado[0] == false)
                tipo_dibujado[0] = true;
             else
@@ -332,6 +311,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case 'L' :
          if(modoMenu == SELVISUALIZACION){
             ajedrez = false;
+            modoIluminacion = false;
             if(tipo_dibujado[1] == false)
                tipo_dibujado[1] = true;
             else
@@ -341,6 +321,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case 'S' :
          if(modoMenu == SELVISUALIZACION){
             ajedrez = false;
+            modoIluminacion = false;
             if(tipo_dibujado[2] == false)
                tipo_dibujado[2] = true;
             else
@@ -348,46 +329,61 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          }         
        break;   
        case 'A' :
-         if(modoMenu == SELVISUALIZACION){
-            if(ajedrez == false)
-               ajedrez = true;
-            else
-               ajedrez = false;
-         }else if(modoMenu == SELUCES){
-            if(variar_alfa)
-               variar_alfa = false;
-            else
-               variar_alfa = true;
+         if(modoMenu == SELVISUALIZACION && !modoIluminacion){
+            modoIluminacion = false;
+            ajedrez = !ajedrez;
+            if(ajedrez){
+               std::cout << "\nModo ajedrez activado\n";
+            }
+
+            else{
+               std::cout << "\nModo lineas desactivado\n";
+            }
+         }else if(modoMenu == SELUCES && modoIluminacion){
+            variar_alfa = !variar_alfa;
          }         
        break;  
        case 'I' :
          if(modoMenu == SELVISUALIZACION){
+            modoIluminacion = !modoIluminacion;
             if(luces){
-               modoMenu = SELVISUALIZACION;
-               luces = false;
+               std::cout << "\nIluminación activada\n";
             }else{
-               modoMenu = SELUCES;
-               luces = true;
+               std::cout << "\nIluminación desactivada\n";
             }
          }         
        break; 
        case '0' :
-         if(modoMenu == SELUCES){
-            if(!is_luz0){
-               is_luz0 = true;
-            }else{
-               is_luz0 = false;
-            }
+         if(modoMenu == SELVISUALIZACION && modoIluminacion){
+            luces[0] = !luces[0];
+            std::cout<<"\n\tLuz 0 activada\n";
          }         
        break;       
        case 'B' :
-         if(modoMenu == SELUCES){
+         if(modoIluminacion){
             if(variar_beta)
                variar_beta = false;
             else
                variar_beta = true;
          }         
        break;    
+       case '<' :
+         if(modoIluminacion){
+            if(variar_alfa)
+               cuadroLuces[1]->variarAnguloAlpha(-1.0);
+            else if (variar_beta)
+               cuadroLuces[1]->variarAnguloBeta(-1.0);
+         }         
+       break; 
+       case '>' :
+         if(modoIluminacion){
+            if(variar_alfa)
+               cuadroLuces[1]->variarAnguloAlpha(1.0);
+            else if (variar_beta)
+               cuadroLuces[1]->variarAnguloBeta(1.0);
+         }         
+       break;     
+
    }
 
    pintaMenu(modoMenu);
@@ -532,4 +528,30 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "Q -> Salir del menú\n";
     break;
   }   
+}
+
+
+void Escena::activacionLuces(){
+   if(luces){
+      if(!glIsEnabled(GL_LIGHTING)){
+         glEnable(GL_LIGHTING);
+      }
+
+      for(int i=0; i<2; i++){
+         if(cuadroLuces[i] != nullptr && luces[i]){
+            cuadroLuces[i]->activar();
+         }
+         else if(cuadroLuces[i] != nullptr && !luces[i]){
+            glDisable(cuadroLuces[i]->getID());
+         }
+      }
+   
+      glShadeModel(GL_SMOOTH);
+   }
+   else{
+      if(glIsEnabled(GL_LIGHTING)){
+         glDisable(GL_LIGHTING);
+      }
+      glShadeModel(GL_FLAT);      
+   }
 }

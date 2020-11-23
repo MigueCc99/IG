@@ -49,8 +49,6 @@ class Escena
       bool inmediato = true;
    // SELECTOR DE FORMA DE DIBUJADO
       bool ajedrez = false;
-      bool luces = false;
-      bool is_luz0, is_luz1 = false;
       bool variar_alfa, variar_beta = false;
       
       std::vector<bool> tipo_dibujado;
@@ -70,8 +68,9 @@ class Escena
    ObjRevolucion * peonNegro = nullptr;
 
    // Luces
-   LuzPosicional *luz0 = nullptr;
-   LuzDireccional *luz1 = nullptr;
+   Luz* cuadroLuces[8] = {nullptr};
+   bool luces[8] = {false};
+   bool modoIluminacion = false;
 
    // Materiales
    Material * m0 = nullptr;
@@ -96,6 +95,8 @@ class Escena
 	void teclaEspecial( int Tecla1, int x, int y );
 
     void pintaMenu(menu tipo);
+
+    void activacionLuces();
 
 };
 #endif

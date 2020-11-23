@@ -50,9 +50,11 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
             calcular_normales();
          glNormalPointer( GL_FLOAT, 0, nv.data() );
          glEnableClientState( GL_NORMAL_ARRAY );
+         glPolygonMode ( GL_FRONT, GL_FILL);
       }
 
-      glPolygonMode ( GL_FRONT, visualizacion);
+      if(!glIsEnabled(GL_LIGHTING))
+         glPolygonMode ( GL_FRONT, visualizacion);
       glPointSize(5.0);
       glEnableClientState( GL_COLOR_ARRAY) ;
       glColorPointer( 3, GL_FLOAT, 0, color_actual.data() );
@@ -173,7 +175,10 @@ void Malla3D::draw_ModoDiferido(bool ajedrez)
 
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri );
 
-      glPolygonMode( GL_FRONT, visualizacion );
+      if(glIsEnabled(GL_LIGHTING))
+         glPolygonMode( GL_FILL, visualizacion );     
+      else
+         glPolygonMode( GL_FRONT, visualizacion );
       glPointSize(5.0);
 
       glDrawElements( GL_TRIANGLES, 3* f.size(), GL_UNSIGNED_INT, 0 ) ;
