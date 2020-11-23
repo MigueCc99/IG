@@ -383,7 +383,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             else{
                std::cout << "\nModo lineas desactivado\n";
             }
-         }else if(modoMenu == SELUCES && modoIluminacion){
+         }else if(modoMenu == SELVISUALIZACION && modoIluminacion){
             variar_alfa = !variar_alfa;
          }         
        break;  
@@ -405,10 +405,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        break;       
        case 'B' :
          if(modoIluminacion){
-            if(variar_beta)
-               variar_beta = false;
-            else
-               variar_beta = true;
+            variar_beta = !variar_beta;
          }         
        break;    
        case '<' :
