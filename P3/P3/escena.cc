@@ -31,12 +31,18 @@ Escena::Escena()
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
 
    // Creamos las luces
-    luz0 = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
-    luz1 = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
+   luz0 = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));
+   luz1 = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
 
    // Creamos los materiales
-   m0 = new Material(Tupla4f(0.3,0.3,0.3,1.0),Tupla4f(1.0,1.0,1.0,1.0),Tupla4f(1.0,1.0,1.0,1.0), 10.0);
-   m1 = new Material(Tupla4f(0.0,0.0,0.0,1.0),Tupla4f(0.0,0.0,0.0,1.0),Tupla4f(0.0,0.0,0.0,1.0), 10.0);
+
+// Materiales
+   Tupla4f ambiente1(0.135, 0.2225, 0.1575, 0.1), especular1(0.0, 0.0, 0.0, 0.1), difuso1(0.786, 0.89, 0.97, 0.1);
+   Tupla4f ambiente2(0.0215,	0.1745, 0.0215, 0.6), especular2(0.7038, 0.27048, 0.0828, 0.6), difuso2(0.0, 0.0, 0.0, 0.6);
+   Tupla4f ambiente3(0.0, 0.05, 0.0, 0.078125), especular3(0.04, 0.7, 0.04, 0.078125), difuso3(0.4, 0.5, 0.4, 0.078125);
+
+   m0 = new Material(difuso1, especular1, ambiente1, 0.1*128.0);
+   m1 = new Material(difuso2, especular2, ambiente2, 0.01*128.0);
 
    peonBlanco->setMaterial(m0);
    peonNegro->setMaterial(m1);
@@ -292,6 +298,12 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             inmediato = true;
          }else if(modoMenu == SELESCENA){
             escena_seleccionada = 1;
+         }else if(modoMenu == SELUCES){
+            if(!is_luz1){
+               is_luz1 = true;
+            }else{
+               is_luz1 = false;
+            }
          }
        break;
        case '2' :
@@ -341,6 +353,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                ajedrez = true;
             else
                ajedrez = false;
+         }else if(modoMenu == SELUCES){
+            if(variar_alfa)
+               variar_alfa = false;
+            else
+               variar_alfa = true;
          }         
        break;  
        case 'I' :
@@ -354,6 +371,23 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             }
          }         
        break; 
+       case '0' :
+         if(modoMenu == SELUCES){
+            if(!is_luz0){
+               is_luz0 = true;
+            }else{
+               is_luz0 = false;
+            }
+         }         
+       break;       
+       case 'B' :
+         if(modoMenu == SELUCES){
+            if(variar_beta)
+               variar_beta = false;
+            else
+               variar_beta = true;
+         }         
+       break;    
    }
 
    pintaMenu(modoMenu);
@@ -454,6 +488,13 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "2 -> Seleccionar escena P2\n";
     std::cout << "3 -> Seleccionar escena P3\n";
     std::cout << "Q -> Salir del menú\n";
+    if (escena_seleccionada == 1){
+      std::cout << "Escena P1 seleccionada\n";
+    }else if (escena_seleccionada == 2){
+      std::cout << "Escena P2 seleccionada\n";
+    }else if (escena_seleccionada == 3){
+      std::cout << "Escena P3 seleccionada\n";
+    }
     break;
     case (SELVISUALIZACION):
     std::cout << "S -> Visualización en sólido\n";
@@ -472,6 +513,22 @@ void Escena::pintaMenu(menu tipo){
     }else{
       std::cout << "Seleccionado el modo diferido\n";
     }
+    std::cout << "Q -> Salir del menú\n";
+    break;
+    case (SELUCES):
+    std::cout << "0 -> Activar luz posicional\n";
+    std::cout << "1 -> Activar luz direccional\n";
+    std::cout << "A -> Seleccionar angulo alfa de luz 1\n";
+    std::cout << "B -> Seleccionar angulo beta de luz 1\n";
+    std::cout << "Q -> Salir del menú\n";
+    if(variar_alfa){
+       std::cout << "Variando el angulo alfa\n";
+    }else if(variar_beta){
+       std::cout << "Variando el angulo beta\n";
+    }
+    std::cout << "> -> Incrementar ángulo seleccionado\n";
+    std::cout << "< -> Decrementar ángulo seleccionado\n";
+    std::cout << "I -> Desactivar iluminación\n";
     std::cout << "Q -> Salir del menú\n";
     break;
   }   
