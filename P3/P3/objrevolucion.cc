@@ -116,6 +116,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
     }
 
     figura_sin_tapas = f.size();
+    fs = f;
 
     if (ultimo)
 		v.push_back(ultimo_punto);
@@ -136,7 +137,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 void ObjRevolucion::setTapas(bool tapas){
     this->tapas = tapas;
 }
-
+/*
 void ObjRevolucion::draw_ModoInmediato(bool ajedrez, bool tapas){
 
    if(ajedrez){
@@ -304,7 +305,7 @@ void ObjRevolucion::draw_ModoDiferido(bool ajedrez, bool tapas)
       glDisableClientState( GL_VERTEX_ARRAY );
    }
 }
-
+*/
 void ObjRevolucion::draw(bool inmediato, GLenum tipo, int color, bool seleccion, bool tapas){
 
    visualizacion = tipo;
@@ -330,19 +331,36 @@ void ObjRevolucion::draw(bool inmediato, GLenum tipo, int color, bool seleccion,
    if(glIsEnabled(GL_LIGHTING))
       m->aplicar();
 
-   if(inmediato){
-      draw_ModoInmediato(false,tapas);
+   if(tapas){
+      if(inmediato){
+         draw_ModoInmediato(false,fs);
+      }else{
+         draw_ModoDiferido(false,fs);
+      }
    }else{
-      draw_ModoDiferido(false,tapas);
+      if(inmediato){
+         draw_ModoInmediato(false,f);
+      }else{
+         draw_ModoDiferido(false,f);
+      }
    }
 
 }
 
 void ObjRevolucion::draw_ajedrez(bool inmediato, bool tapas){
 
-   if(inmediato)
-      draw_ModoInmediato(true,tapas);
-   else
-      draw_ModoDiferido(true,tapas);
+   if(tapas){
+      if(inmediato){
+         draw_ModoInmediato(true,fs);
+      }else{
+         draw_ModoDiferido(true,fs);
+      }
+   }else{
+      if(inmediato){
+         draw_ModoInmediato(true,f);
+      }else{
+         draw_ModoDiferido(true,f);
+      }
+   }
    
 }

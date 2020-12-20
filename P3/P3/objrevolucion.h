@@ -29,8 +29,6 @@ class ObjRevolucion : public Malla3D
     ObjRevolucion();
     ObjRevolucion(const std::string & archivo, int num_instancias, bool tapas) ;
     ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapas) ;
-    void draw_ModoInmediato(bool ajedrez, bool tapas);
-    void draw_ModoDiferido(bool ajedrez, bool tapas);
     void setTapas(bool tapas);
     void draw(bool inmediato, GLenum tipo, int color, bool seleccion, bool tapas);
     void draw_ajedrez(bool inmediato, bool tapas);
@@ -38,6 +36,7 @@ class ObjRevolucion : public Malla3D
 protected:
 
     int figura_sin_tapas;
+    std::vector<Tupla3i> fs;
     int ejeRevolucion = 0;
     bool tapas;
     std::vector<Tupla3f> aux;

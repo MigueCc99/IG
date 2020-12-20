@@ -30,10 +30,10 @@ class Malla3D
    Malla3D();
 
    // dibuja el objeto en modo inmediato
-   void draw_ModoInmediato(bool ajedrez);
+   void draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura);
 
    // dibuja el objeto en modo diferido (usando VBOs)
-   void draw_ModoDiferido(bool ajedrez);
+   void draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura);
 
    // función que redibuja el objeto
    // está función llama a 'draw_ModoInmediato' (modo inmediato)

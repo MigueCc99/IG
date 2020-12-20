@@ -6,7 +6,7 @@ Esfera::Esfera(int num_vert_perfil, int num_instancias_perf, float r){
 
 	num_instancias = num_instancias_perf;
 
-	for (int i=1; i<num_vert_perfil+1; i++){
+	for (int i=1; i<num_vert_perfil; i++){
 		alpha = (M_PI * i) /(num_vert_perfil);
 		eje_x =  r * sin(alpha);
 		eje_y = -r * cos(alpha)  ;
