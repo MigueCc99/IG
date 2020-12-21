@@ -53,7 +53,7 @@ class Escena
       
       std::vector<bool> tipo_dibujado;
       GLenum tipo_dibujado_actual;
-      int escena_seleccionada = 4;
+      int escena_seleccionada = 3;
       int objeto_seleccionado = 3;
    // Objetos de la escena
    Ejes ejes;
@@ -79,7 +79,7 @@ class Escena
 
    float incremento_luz = -700;   
    bool tapas = true;
-   
+
    public:
 
     Escena();
@@ -97,6 +97,8 @@ class Escena
     void pintaMenu(menu tipo);
 
     void activacionLuces();
+
+    void porDefecto();
 
 };
 #endif

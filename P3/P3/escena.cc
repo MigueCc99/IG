@@ -75,6 +75,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
    change_projection( float(UI_window_width)/float(UI_window_height) );
 	glViewport( 0, 0, UI_window_width, UI_window_height );
    pintaMenu(modoMenu);
+   porDefecto();
 }
 
 
@@ -291,7 +292,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break ;
       case 'O' :
          // ESTAMOS EN MODO SELECCION DE OBJETO
-         modoMenu=SELOBJETO; 
+         if(escena_seleccionada == 1)
+            modoMenu=SELOBJETO; 
          break ;
         case 'V' :
          // ESTAMOS EN MODO SELECCION DE MODO DE VISUALIZACION
@@ -393,11 +395,13 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        break;  
        case 'I' :
          if(modoMenu == SELVISUALIZACION){
+            if(escena_seleccionada == 3){
             modoIluminacion = !modoIluminacion;
             if(modoIluminacion){
                std::cout << "\nIluminación activada\n";
             }else{
                std::cout << "\nIluminación desactivada\n";
+            }
             }
          }         
        break; 
@@ -508,7 +512,8 @@ void Escena::pintaMenu(menu tipo){
 
   switch (tipo){
     case (NADA):
-    std::cout << "O -> Selección de objeto\n"; 
+    if(escena_seleccionada == 1)
+      std::cout << "O -> Selección de objeto\n"; 
     std::cout << "E -> Selección de escena\n";  
     std::cout << "V -> Selección de modo de visualización\n";
     std::cout << "D -> Selección de modo de dibujado\n";
@@ -548,7 +553,8 @@ void Escena::pintaMenu(menu tipo){
       std::cout << "P -> Visualización en puntos\n";
       std::cout << "A -> Visualización en ajedrez\n";
       std::cout << "T -> Gestión de tapas: " << tapas << std::endl;
-      std::cout << "I -> Activar iluminación\n";
+      if(escena_seleccionada == 3)
+         std::cout << "I -> Activar iluminación\n";
       std::cout << "Q -> Salir del menú\n";
     }
     else{
@@ -607,4 +613,8 @@ void Escena::activacionLuces(){
       }
       glShadeModel(GL_FLAT);      
    }
+}
+
+void Escena::porDefecto(){
+   tipo_dibujado[2] = true;
 }
