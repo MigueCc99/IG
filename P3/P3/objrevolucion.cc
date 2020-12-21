@@ -35,6 +35,7 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
 ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapas) {
     crearMalla(archivo,num_instancias);
     this->tapas = tapas;
+    this->num_instancias = num_instancias;
     if (tapas){
         this->crearTapaInferior();
         this->crearTapaSuperior();
@@ -130,8 +131,9 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
         if (tapas){
         this->crearTapaSuperior();
-		      this->crearTapaInferior();
+		  this->crearTapaInferior();
     }
+    
 }
 
 void ObjRevolucion::setTapas(bool tapas){
