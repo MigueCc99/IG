@@ -206,7 +206,8 @@ void Escena::dibujar()
                   glTranslatef(0,0,0);
                   glScalef(20,20,20);
                   cono->draw_ajedrez(inmediato,tapas);
-               glPopMatrix();       
+               glPopMatrix();   
+                */     
                glPushMatrix();
                   glTranslatef(85,0,0);
                   glScalef(20,20,20);
@@ -217,7 +218,6 @@ void Escena::dibujar()
                   glScalef(20,20,20);
                   esfera->draw_ajedrez(inmediato,tapas);
                glPopMatrix();
-                */ 
                glPushMatrix();
                   glTranslatef(-35,0,0);
                   glScalef(20,20,20);
@@ -240,6 +240,7 @@ void Escena::dibujar()
                   glScalef(20,20,20);
                   cono->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
                glPopMatrix();
+               */
                glPushMatrix();
                   glTranslatef(85,0,0);
                   glScalef(20,20,20);
@@ -250,7 +251,6 @@ void Escena::dibujar()
                   glScalef(20,20,20);
                   esfera->draw(inmediato, tipo_dibujado_actual, color, false, tapas);
                glPopMatrix();  
-               */
                glPushMatrix();
                   glTranslatef(-35,0,0);
                   glScalef(20,20,20);
