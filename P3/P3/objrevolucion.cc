@@ -331,7 +331,7 @@ void ObjRevolucion::draw(bool inmediato, GLenum tipo, int color, bool seleccion,
    if(glIsEnabled(GL_LIGHTING))
       m->aplicar();
 
-   if(tapas){
+   if(!tapas){
       if(inmediato){
          draw_ModoInmediato(false,fs);
       }else{
@@ -349,7 +349,7 @@ void ObjRevolucion::draw(bool inmediato, GLenum tipo, int color, bool seleccion,
 
 void ObjRevolucion::draw_ajedrez(bool inmediato, bool tapas){
 
-   if(tapas){
+   if(!tapas){
       if(inmediato){
          draw_ModoInmediato(true,fs);
       }else{

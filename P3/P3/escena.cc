@@ -190,7 +190,7 @@ void Escena::dibujar()
                glPopMatrix();  
             }
          }
-// Escena P2
+// Escena P3
          if(escena_seleccionada == 3){  
 
             activacionLuces();
