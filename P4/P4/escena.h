@@ -13,6 +13,7 @@
 #include "luz.h"
 #include "luzposicional.h"
 #include "luzdireccional.h"
+#include "molino.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
@@ -53,7 +54,7 @@ class Escena
       
       std::vector<bool> tipo_dibujado;
       GLenum tipo_dibujado_actual;
-      int escena_seleccionada = 3;
+      int escena_seleccionada = 4;
       int objeto_seleccionado = 3;
    // Objetos de la escena
    Ejes ejes;
@@ -66,6 +67,7 @@ class Escena
    Esfera * esfera = nullptr;
    ObjRevolucion * peonBlanco = nullptr;
    ObjRevolucion * peonNegro = nullptr;
+   Molino *molino = nullptr;
 
    // Luces
    Luz* cuadroLuces[8] = {nullptr};
