@@ -37,6 +37,7 @@ class ObjRevolucion : public Malla3D
 
 protected:
 
+    int TAM;
     int figura_sin_tapas;
     std::vector<Tupla3i> fs;
     int ejeRevolucion = 0;

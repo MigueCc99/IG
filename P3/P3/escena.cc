@@ -31,8 +31,13 @@ Escena::Escena()
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
 
    // Creamos las luces
-   cuadroLuces[0] = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));;
-   cuadroLuces[1] = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
+   cuadroLuces[0] = new LuzPosicional({0, 0, 0}, GL_LIGHT1, {0.2, 0.2, 0.2, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
+   cuadroLuces[1] = new LuzDireccional({0, 0}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
+
+   /*
+      cuadroLuces[0] = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));;
+      cuadroLuces[1] = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
+   */
 
    // Creamos los materiales
 
@@ -43,13 +48,14 @@ Escena::Escena()
 
    m0 = new Material(difuso1, especular1, ambiente1, 0.1*128.0);
    m1 = new Material(difuso2, especular2, ambiente2, 0.01*128.0);
-   m2 = new Material(difuso3, especular3, ambiente3, 0.6*128.0);
+   m2 = new Material(Tupla4f(0.4,0.0,0.0,1.0),Tupla4f(1.0,0.0,0.0,1.0),Tupla4f(1.0,0.0,0.0,1.0), 10.0);
+   oro = new Material(Tupla4f(0.24725,0.1995,0.0745,1.0),Tupla4f(0.75164,0.60648,0.22648,1.0),Tupla4f(0.628281,0.555802,0.366065,1.0), 10.0);
 
    tetraedro->setMaterial(m2);
    cono->setMaterial(m2);
    cilindro->setMaterial(m2);
    esfera->setMaterial(m2);
-   peonBlanco->setMaterial(m0);
+   peonBlanco->setMaterial(oro);
    peonNegro->setMaterial(m1);
 }
 
@@ -419,9 +425,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case '<' :
          if(modoIluminacion){
             if(variar_alfa)
-               cuadroLuces[1]->variarAnguloAlpha(-1.0);
+               cuadroLuces[1]->variarAnguloAlpha(-10.0);
             else if (variar_beta)
-               cuadroLuces[1]->variarAnguloBeta(-1.0);
+               cuadroLuces[1]->variarAnguloBeta(-10.0);
          }         
        break; 
        case '>' :
