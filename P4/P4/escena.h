@@ -16,7 +16,7 @@
 #include "molino.h"
 #include "dragon.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES,GRADOSLIBERTAD,ANIMACION} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
 
 class Escena
@@ -51,6 +51,7 @@ class Escena
       bool inmediato = true;
    // SELECTOR DE FORMA DE DIBUJADO
       bool ajedrez = false;
+      bool giro0 = false, giro1 = false, desplazamiento0 = false;
       bool variar_alfa, variar_beta = false;
       
       std::vector<bool> tipo_dibujado;
@@ -85,6 +86,25 @@ class Escena
    float incremento_luz = -700;   
    bool tapas = true;
 
+   // Variables animación del dragón
+   bool activar_animacion = false;
+   bool num_fase = 0;
+
+   float incremento_alas = 0.9;
+   int fase_alas = 0;
+
+   float cola_speed = 0.5;
+   float alas_speed = 0.5;
+   float desplazamiento_speed = 5.5;
+
+   float incremento_desplazamiento = 0.9;
+   float fase_desplazamientoy = 1;
+   float fase_desplazamientoz = 1;
+
+   float incremento_giro = 0.3;
+
+   size_t tope1 = 300, tope2 = 0, limtope2 = 30, incremento1 = 0, incremento2 = 0;
+
    public:
 
     Escena();
@@ -98,6 +118,7 @@ class Escena
 	// Interacción con la escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
 	void teclaEspecial( int Tecla1, int x, int y );
+   void animarModeloJerarquico();
 
     void pintaMenu(menu tipo);
 

@@ -294,6 +294,71 @@ void Escena::dibujar()
    }
 }
 
+void Escena::animarModeloJerarquico(){
+   if(activar_animacion){
+      switch(num_fase){
+         case 0:
+            dragon->modificarDesplazamiento(incremento_desplazamiento, incremento_desplazamiento);
+            dragon->modificarRotacionx(-incremento_giro);
+            incremento1++;
+            if(incremento1 > tope1){
+               num_fase = 1;
+               incremento1 = 0;
+            }
+            break;
+         case 1:
+            dragon->modificarDesplazamiento(incremento_desplazamiento, -incremento_desplazamiento);
+            dragon->modificarRotacionx(-incremento_giro);
+            incremento1++;
+            if(incremento1 > tope1){
+               num_fase = 2;
+               incremento1 = 0;
+            }
+            break;
+         case 2:
+            dragon->modificarDesplazamiento(-incremento_desplazamiento, -incremento_desplazamiento);
+            dragon->modificarRotacionx(-incremento_giro);
+            incremento1++;
+            if(incremento1 > tope1){
+               num_fase = 3;
+               incremento1 = 0;
+            }
+            break;     
+         case 3:
+            dragon->modificarDesplazamiento(-incremento_desplazamiento, incremento_desplazamiento);
+            dragon->modificarRotacionx(-incremento_giro);
+            incremento1++;
+            if(incremento1 > tope1){
+               num_fase = 0;
+               incremento1 = 0;
+            }
+            break;         
+      }
+
+      switch(fase_alas){
+         case 0:
+            dragon->modificarGiroAlas(incremento_alas);
+            dragon->modificarGiroCola(incremento_alas);
+            tope2++;
+            if(tope2 > limtope2){
+               limtope2 = 60;
+               fase_alas = 1;
+               tope2 = 0;
+            }
+            break;
+         case 1:
+            dragon->modificarGiroAlas(-incremento_alas);
+            dragon->modificarGiroCola(-incremento_alas);
+            tope2++;
+            if(tope2 > 60){
+               fase_alas = 0;
+               tope2 = 0;
+            }
+            break;
+      }
+   }
+}
+
 //**************************************************************************
 //
 // función que se invoca cuando se pulsa una tecla
@@ -358,6 +423,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          }else if(modoMenu == SELVISUALIZACION && modoIluminacion){
             luces[1] = !luces[1];
             std::cout << "\n\tLuz 1 activada\n";
+         }else if(modoMenu == GRADOSLIBERTAD){
+            giro1 = !giro1;
          }
        break;
        case '2' :
@@ -365,6 +432,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             inmediato = false;
          }else if(modoMenu == SELESCENA){
             escena_seleccionada = 2;
+         }else if(modoMenu == GRADOSLIBERTAD){
+            desplazamiento0 = !desplazamiento0;
          }
        break;  
        case '3' :
@@ -442,7 +511,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          if(modoMenu == SELVISUALIZACION && modoIluminacion){
             luces[0] = !luces[0];
             std::cout<<"\n\tLuz 0 activada\n";
-         }         
+         }else if(modoMenu == GRADOSLIBERTAD){
+            giro0 = !giro0;
+         } 
        break;       
        case 'B' :
          if(modoIluminacion){
@@ -466,7 +537,80 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             else if (variar_beta)
                cuadroLuces[1]->variarAnguloBeta(10.0);
          }         
-       break;     
+       break;   
+       case '+' :
+         if(modoMenu == GRADOSLIBERTAD){
+            if(giro0){
+               dragon->modificarGiroCola(cola_speed);
+            }
+            if(giro1){
+               dragon->modificarGiroAlas(alas_speed);
+            }
+            if(desplazamiento0){
+               dragon->modificarDesplazamiento(desplazamiento_speed,desplazamiento_speed);
+            }
+         }else if(modoMenu == ANIMACION){
+            incremento_alas += 0.2;
+            incremento_desplazamiento += 0.2;
+            incremento_giro += 0.07;
+
+            tope1 -= 45;
+         }
+       break; 
+       case '-':
+          if (modoMenu == GRADOSLIBERTAD){
+
+             if (giro0){
+                dragon->modificarGiroCola(-cola_speed);
+             }
+             if (giro1){
+                dragon->modificarGiroAlas(-alas_speed);
+             }
+             if (desplazamiento0){
+                dragon->modificarDesplazamiento(-desplazamiento_speed,-desplazamiento_speed);
+             }
+          }else if (modoMenu == ANIMACION){
+             incremento_alas -= 0.2;
+             incremento_desplazamiento -= 0.2;
+             incremento_giro -= 0.07;
+
+             tope1 += 90;
+          }
+       break; 
+       case 'J' :
+         if(!activar_animacion){
+            modoMenu = ANIMACION;
+         }else{
+            modoMenu = NADA;
+         }
+         activar_animacion = !activar_animacion;
+       break;  
+       case 'M' :
+         if(giro0){
+            cola_speed += 0.1;
+         }
+         if(giro1){
+            alas_speed += 0.1;
+         }
+         if(desplazamiento0){
+            desplazamiento_speed += 0.1;
+         }
+       break;  
+       case 'N' :
+         if(giro0){
+            cola_speed -= 0.1;
+         }
+         if(giro1){
+            alas_speed -= 0.1;
+         }
+         if(desplazamiento0){
+            desplazamiento_speed -= 0.1;
+         }
+       break;  
+       case 'G':
+       if(modoMenu == NADA)
+         modoMenu = GRADOSLIBERTAD;
+       break;  
 
    }
 
@@ -552,6 +696,8 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "E -> Selección de escena\n";  
     std::cout << "V -> Selección de modo de visualización\n";
     std::cout << "D -> Selección de modo de dibujado\n";
+    std::cout << "J -> Animación automática\n";
+    std::cout << "G -> Movimiento grados de libertad\n";
     std::cout << "Q -> Salir del programa\n";
     break;
     case (SELOBJETO):
@@ -622,6 +768,21 @@ void Escena::pintaMenu(menu tipo){
     }else{
       std::cout << "Seleccionado el modo diferido\n";
     }
+    std::cout << "Q -> Salir del menú\n";
+    break;
+    case (GRADOSLIBERTAD):
+    std::cout << "0 -> Activar giro cola (" << giro0 << ")\n";
+    std::cout << "1 -> Activar giro alas (" << giro1 << ")\n";
+    std::cout << "2 -> Activar desplazamiento (" << desplazamiento0 << ")\n";
+    std::cout << "+ -> Aumentar grados de libertad\n";
+    std::cout << "- -> Disminuir grados de libertad\n";
+    std::cout << "M -> Aumentar velocidad de partes seleccionadas\n";
+    std::cout << "N -> Disminuir velocidad partes seleccionadas\n";
+    std::cout << "Q -> Salir del menú\n";
+    break;
+    case (ANIMACION):
+    std::cout << "La animación ha comenzado\n";
+    std::cout << "J -> Detener la animación\n";
     std::cout << "Q -> Salir del menú\n";
     break;
   }

@@ -29,6 +29,13 @@ void draw_scene(void)
 	glutSwapBuffers();
 }
 
+void funcion_idle(){
+	if (escena != 0){
+		escena->animarModeloJerarquico();
+	}
+	glutPostRedisplay();
+}
+
 //***************************************************************************
 // Funcion llamada cuando se produce un cambio en el tamaño de la ventana
 //
@@ -108,6 +115,8 @@ int main( int argc, char **argv )
 
    // se indica las caracteristicas que se desean para la visualización con OpenGL
    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+
+   glutIdleFunc(funcion_idle);
 
    // variables que determninan la posicion y tamaño de la ventana X
    const int UI_window_pos_x  = 50,
