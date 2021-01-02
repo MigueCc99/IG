@@ -3,7 +3,7 @@
 Molino::Molino(){
     cabezal = new Cabezal();
     plataforma = new Cubo();
-    soporte = new Cilindro(50,80,10);
+    soporte = new Cilindro(10,50,80,10);
 }
 void Molino::drawMolino(bool ajedrez, bool inmediato, GLenum tipo_dibujado_actual, int color, bool tapas){
     if(ajedrez){

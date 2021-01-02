@@ -14,6 +14,7 @@
 #include "luzposicional.h"
 #include "luzdireccional.h"
 #include "molino.h"
+#include "dragon.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
@@ -67,7 +68,8 @@ class Escena
    Esfera * esfera = nullptr;
    ObjRevolucion * peonBlanco = nullptr;
    ObjRevolucion * peonNegro = nullptr;
-   Molino *molino = nullptr;
+   Molino * molino = nullptr;
+   Dragon * dragon = nullptr;
 
    // Luces
    Luz* cuadroLuces[8] = {nullptr};

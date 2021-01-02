@@ -30,6 +30,7 @@ Escena::Escena()
    peonBlanco = new ObjRevolucion("plys/peon.ply",20,true);
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
    molino = new Molino();  // Modelo Jerárquico
+   dragon = new Dragon();  // Modelo Jerárquico
 
    // Creamos las luces
    cuadroLuces[0] = new LuzPosicional({0, 0, 0}, GL_LIGHT1, {0.2, 0.2, 0.2, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
@@ -59,6 +60,7 @@ Escena::Escena()
    peonBlanco->setMaterial(oro);
    peonNegro->setMaterial(m1);
    molino->setMaterial(oro);
+   dragon->setMaterial(oro);
 }
 
 //**************************************************************************
@@ -276,13 +278,17 @@ void Escena::dibujar()
 // Escena P4
          if(escena_seleccionada == 4){
             activacionLuces();
-            EjeRotatorio *eje = new EjeRotatorio();
-            eje->setMaterial(oro);
-         glPushMatrix();
-            //glTranslatef(145, -90, -250);
-            //glScalef(2,2,2);
-            eje->drawEje(ajedrez, inmediato, tipo_dibujado_actual, color, tapas);
-         glPopMatrix();
+            if(ajedrez){
+               glPushMatrix();
+                  glTranslatef(0,130,0);
+                  dragon->draw_ajedrez(inmediato);                 
+               glPopMatrix();
+            }else{
+               glPushMatrix();
+                  glTranslatef(0,130,0);
+                  dragon->draw(inmediato, tipo_dibujado_actual, color);                 
+               glPopMatrix();
+            }
          }
       }
    }
@@ -415,6 +421,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                std::cout << "\nModo lineas desactivado\n";
             }
          }else if(modoMenu == SELVISUALIZACION && modoIluminacion){
+            if(variar_beta)
+               variar_beta = false;
             variar_alfa = !variar_alfa;
          }         
        break;  
@@ -438,6 +446,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        break;       
        case 'B' :
          if(modoIluminacion){
+            if(variar_alfa)
+               variar_alfa = false;
             variar_beta = !variar_beta;
          }         
        break;    
@@ -452,9 +462,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case '>' :
          if(modoIluminacion){
             if(variar_alfa)
-               cuadroLuces[1]->variarAnguloAlpha(1.0);
+               cuadroLuces[1]->variarAnguloAlpha(10.0);
             else if (variar_beta)
-               cuadroLuces[1]->variarAnguloBeta(1.0);
+               cuadroLuces[1]->variarAnguloBeta(10.0);
          }         
        break;     
 
