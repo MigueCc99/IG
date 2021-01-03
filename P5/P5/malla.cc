@@ -87,7 +87,8 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
          else
             impar.push_back(figura[i]);
       }
-      
+
+      id_vbo_ver = 0, id_vbo_tri = 0, id_vbo_col = 0;
       if (id_vbo_ver == 0 || id_vbo_tri == 0 || id_vbo_col == 0){
          id_vbo_ver = CrearVBO (GL_ARRAY_BUFFER, (3*v.size())*sizeof(float), v.data() );
          id_vbo_tri = CrearVBO (GL_ELEMENT_ARRAY_BUFFER, (3*par.size())*sizeof(int), par.data() );
@@ -109,11 +110,12 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
       glPolygonMode( GL_FRONT, visualizacion );
       glPointSize(5.0);
 
-      glDrawElements( GL_TRIANGLES, 3* figura.size(), GL_UNSIGNED_INT, 0 ) ;
+      glDrawElements( GL_TRIANGLES, 3* par.size(), GL_UNSIGNED_INT, 0 ) ;
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
       glDisableClientState( GL_VERTEX_ARRAY );
 
+      id_vbo_ver = id_vbo_tri = id_vbo_col = 0;
       if (id_vbo_ver == 0 || id_vbo_tri == 0 || id_vbo_col == 0){
          id_vbo_ver = CrearVBO (GL_ARRAY_BUFFER, (3*v.size())*sizeof(float), v.data() );
          id_vbo_tri = CrearVBO (GL_ELEMENT_ARRAY_BUFFER, (3*impar.size())*sizeof(int), impar.data() );
@@ -136,7 +138,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
       glPolygonMode( GL_FRONT, visualizacion );
       glPointSize(5.0);
 
-      glDrawElements( GL_TRIANGLES, 3* figura.size(), GL_UNSIGNED_INT, 0 ) ;
+      glDrawElements( GL_TRIANGLES, 3* impar.size(), GL_UNSIGNED_INT, 0 ) ;
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
       glDisableClientState( GL_VERTEX_ARRAY );
@@ -146,6 +148,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
       if(glIsEnabled(GL_LIGHTING))
          calcular_normales();
 
+      id_vbo_ver = id_vbo_tri = id_vbo_col = 0;
       if (id_vbo_ver == 0 || id_vbo_tri == 0 || id_vbo_col == 0){
          id_vbo_ver = CrearVBO (GL_ARRAY_BUFFER, (3*v.size())*sizeof(float), v.data() );
          id_vbo_tri = CrearVBO (GL_ELEMENT_ARRAY_BUFFER, (3*figura.size())*sizeof(int), figura.data() );
