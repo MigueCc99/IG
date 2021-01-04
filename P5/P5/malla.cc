@@ -58,6 +58,13 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura)
       glPointSize(5.0);
       glEnableClientState( GL_COLOR_ARRAY) ;
       glColorPointer( 3, GL_FLOAT, 0, color_actual.data() );
+
+      // Tabla de texturas
+      if(!ct.empty() && tex != nullptr){
+         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+         glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
+      }
+
       // visualizar, indicando: tipo de primitiva, número de índices,
       // tipo de los índices, y dirección de la tabla de índices
       glDrawElements( GL_TRIANGLES, figura.size()*3, GL_UNSIGNED_INT, figura.data());
@@ -287,32 +294,31 @@ void Malla3D::inicializa_colores(){
 }
 
 void Malla3D::calcular_normales(){
-   Tupla3f a;
-   Tupla3f b;
-   Tupla3f mc;
+  // Gestionamos las normales de las caras
+  for(int i = 0; i < this->f.size(); i++){
+    Tupla3f p = v[f[i](0)];
+    Tupla3f q = v[f[i](1)];
+    Tupla3f r = v[f[i](2)];
 
-   nv.resize(v.size());
+    // Las dos aristas resultantes
+    Tupla3f a = q-p;
+    Tupla3f b = r-p;
 
-   for(int i=0; i<nv.size(); i++){
-      nv[i] = {0.0,0.0,0.0};
-   }
+    // Vector perpendicular a la cara
+    Tupla3f mc = a.cross(b);
 
-   for(int i=0; i<f.size(); i++){
+    // Normalizamos el vector y lo introducimos
+    this->nc.push_back(mc.normalized());
+  }
 
-      a = v[f[i](1)] - v[f[i](0)];
-      b = v[f[i](2)] - v[f[i](0)];   
+  // Gestionamos las normales de los vértices
+  nv = std::vector<Tupla3f>(v.size(), {0, 0, 0});
 
-      mc = a.cross(b);   
-
-      nv[f[i](0)] = nv[f[i](0)] + mc.normalized();
-      nv[f[i](1)] = nv[f[i](1)] + mc.normalized();
-      nv[f[i](2)] = nv[f[i](2)] + mc.normalized();
-
-   }
-
-   for(int i=0; i<nv.size(); i++){
-      nv[i] = nv[i].normalized();
-   }
+  for(int i = 0; i < this->f.size(); i++){
+    nv[f[i](0)] = (nv[f[i](0)] + nc[i]).normalized();
+    nv[f[i](1)] = (nv[f[i](1)] + nc[i]).normalized();
+    nv[f[i](2)] = (nv[f[i](2)] + nc[i]).normalized();
+  }
 
 }
 

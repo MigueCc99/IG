@@ -12,6 +12,7 @@
 
 #include "aux.h"
 #include "material.h"
+#include "textura.h"
 
 // *****************************************************************************
 //
@@ -26,6 +27,7 @@ class Malla3D
    unsigned id_vbo_tri = 0;
    unsigned id_vbo_col = 0;
    unsigned id_vbo_nor = 0;
+   unsigned id_vbo_tex = 0;
 
    Malla3D();
 
@@ -44,6 +46,8 @@ class Malla3D
 
    void setMaterial(Material * mat);
 
+   void setTextura(Textura t);
+
    // Función VBO
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
    protected:
@@ -54,7 +58,9 @@ class Malla3D
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
-   std::vector<Tupla3f> nv;
+   std::vector<Tupla3f> nv; // Vector de normales de los vértices
+   std::vector<Tupla3f> nc; // Vector de normales de las caras
+   std::vector<Tupla2f> ct; // Tabla de coordenadas de texturas
    std::vector<Tupla3f> c1;
    std::vector<Tupla3f> c2;
    std::vector<Tupla3f> c3;
@@ -64,7 +70,8 @@ class Malla3D
    std::vector<Tupla3f> color_actual;
    // completar: tabla de colores, tabla de normales de vértices
 
-   Material * m;
+   Material * m = nullptr;
+   Textura *tex = nullptr;
 
 } ;
 

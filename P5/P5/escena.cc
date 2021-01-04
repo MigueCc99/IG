@@ -493,6 +493,13 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if(variar_beta)
                variar_beta = false;
             variar_alfa = !variar_alfa;
+         }else if(modoMenu == NADA){
+            if(!activar_animacion){
+               modoMenu = ANIMACION;
+            }else{
+               modoMenu = NADA;
+            }
+            activar_animacion = !activar_animacion;
          }         
        break;  
        case 'I' :
@@ -576,15 +583,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
              tope1 += 90;
           }
-       break; 
-       case 'J' :
-         if(!activar_animacion){
-            modoMenu = ANIMACION;
-         }else{
-            modoMenu = NADA;
-         }
-         activar_animacion = !activar_animacion;
-       break;  
+       break;   
        case 'M' :
          if(giro0){
             cola_speed += 0.1;
@@ -696,7 +695,7 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "E -> Selección de escena\n";  
     std::cout << "V -> Selección de modo de visualización\n";
     std::cout << "D -> Selección de modo de dibujado\n";
-    std::cout << "J -> Animación automática\n";
+    std::cout << "A -> Animación automática\n";
     std::cout << "G -> Movimiento grados de libertad\n";
     std::cout << "Q -> Salir del programa\n";
     break;
@@ -782,7 +781,7 @@ void Escena::pintaMenu(menu tipo){
     break;
     case (ANIMACION):
     std::cout << "La animación ha comenzado\n";
-    std::cout << "J -> Detener la animación\n";
+    std::cout << "A -> Detener la animación\n";
     std::cout << "Q -> Salir del menú\n";
     break;
   }
