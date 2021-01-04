@@ -92,6 +92,7 @@ class Escena
    Textura * tex1;
    Textura * tex2;
    Textura * tex3;
+   Textura * tex4;
 
    float incremento_luz = -700;   
    bool tapas = true;

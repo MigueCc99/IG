@@ -70,11 +70,13 @@ Escena::Escena()
 
 // Texturas
    tex1 = new Textura("img/text-madera.jpg", 1);
-   tex2 = new Textura("img/alpes.jpeg", 2);
+   tex2 = new Textura("img/dunas.jpg", 2);
    tex3 = new Textura("img/text-lata-1.jpg", 3);
-   cuadro->setTextura(tex1);
+   tex4 = new Textura("img/suelo.jpeg", 3);
+
+   cuadro->setTextura(tex2);
    cuadro->setCoordenadas();
-   suelo->setTextura(tex1);
+   suelo->setTextura(tex4);
    suelo->setCoordenadas();
 }
 
@@ -324,6 +326,18 @@ void Escena::dibujar()
                   glScalef(8, 8, 8);
                   suelo->draw(inmediato, tipo_dibujado[2], color, false); 
                glPopMatrix();
+               glDisable(GL_TEXTURE_2D);
+               if(ajedrez){
+                  glPushMatrix();
+                     glTranslatef(0,50,0);
+                     dragon->draw_ajedrez(inmediato);                 
+                  glPopMatrix();
+               }else{
+                  glPushMatrix();
+                     glTranslatef(0,50,0);
+                     dragon->draw(inmediato, tipo_dibujado_actual, color);                 
+                  glPopMatrix();
+               }
             glPopMatrix();
          }      
       }
@@ -854,4 +868,9 @@ void Escena::activacionLuces(){
 
 void Escena::porDefecto(){
    tipo_dibujado[2] = true;
+   modoIluminacion = true;
+   for(int i=0; i<2; i++){
+      cuadroLuces[i]->activar();
+      luces[i] = true;
+   }
 }
