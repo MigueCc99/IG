@@ -75,6 +75,9 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura)
       if(glIsEnabled(GL_LIGHTING)){
          glDisableClientState( GL_NORMAL_ARRAY );
       }
+      if(glIsEnabled(GL_TEXTURE_COORD_ARRAY)){
+         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+      }
    }
 
 }
@@ -161,6 +164,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
          id_vbo_tri = CrearVBO (GL_ELEMENT_ARRAY_BUFFER, (3*figura.size())*sizeof(int), figura.data() );
          id_vbo_col = CrearVBO (GL_ARRAY_BUFFER, (3*color_actual.size())*sizeof(float), color_actual.data() );
          id_vbo_nor = CrearVBO (GL_ARRAY_BUFFER, (3*nv.size())*sizeof(float), nv.data() );
+         id_vbo_tex = CrearVBO (GL_ARRAY_BUFFER, (3*ct.size())*sizeof(float), ct.data() );
       }
 
       glBindBuffer( GL_ARRAY_BUFFER, id_vbo_ver );
@@ -180,6 +184,11 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
       glColorPointer( 3, GL_FLOAT, 0, 0 );
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
+      if(!ct.empty() && textura != nullptr){
+         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+         glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
+      }
+
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri );
 
       if(glIsEnabled(GL_LIGHTING))
@@ -195,6 +204,9 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
 
       if(glIsEnabled(GL_LIGHTING)){
          glDisableClientState( GL_NORMAL_ARRAY );
+      }
+      if(glIsEnabled(GL_TEXTURE_COORD_ARRAY)){
+         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
       }
    }
 }

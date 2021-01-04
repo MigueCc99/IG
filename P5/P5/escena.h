@@ -72,6 +72,9 @@ class Escena
    ObjRevolucion * peonNegro = nullptr;
    Molino * molino = nullptr;
    Dragon * dragon = nullptr;
+
+   // Cuadro y suelo
+   Cuadro* suelo = nullptr;
    Cuadro * cuadro = nullptr;
 
    // Luces

@@ -31,7 +31,10 @@ Escena::Escena()
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
    molino = new Molino();  // Modelo Jerárquico
    dragon = new Dragon();  // Modelo Jerárquico
+
+   // Cuadro y suelo
    cuadro = new Cuadro();
+   suelo = new Cuadro();
 
    // Creamos las luces
    cuadroLuces[0] = new LuzPosicional({0, 0, 0}, GL_LIGHT1, {0.2, 0.2, 0.2, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
@@ -63,6 +66,7 @@ Escena::Escena()
    molino->setMaterial(oro);
    dragon->setMaterial(oro);
    cuadro->setMaterial(m0);
+   suelo->setMaterial(m0);
 
 // Texturas
    tex1 = new Textura("img/text-madera.jpg", 1);
@@ -70,6 +74,8 @@ Escena::Escena()
    tex3 = new Textura("img/text-lata-1.jpg", 3);
    cuadro->setTextura(tex1);
    cuadro->setCoordenadas();
+   suelo->setTextura(tex1);
+   suelo->setCoordenadas();
 }
 
 //**************************************************************************
@@ -309,7 +315,14 @@ void Escena::dibujar()
                   glTranslatef(-350, 650, -500);
                   glScalef(8, 8, 8);
                   glRotatef(-90, 0, 0, 1);
-                  cuadro->draw(inmediato, tipo_dibujado_actual, color, false); 
+                  cuadro->draw(inmediato, tipo_dibujado[2], color, false); 
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(-350, -100, -375);
+                  glRotatef(-90, 1, 0, 0);
+                  glRotatef(-90, 0, 0, 1);
+                  glScalef(8, 8, 8);
+                  suelo->draw(inmediato, tipo_dibujado[2], color, false); 
                glPopMatrix();
             glPopMatrix();
          }      
