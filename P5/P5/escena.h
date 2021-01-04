@@ -15,6 +15,7 @@
 #include "luzdireccional.h"
 #include "molino.h"
 #include "dragon.h"
+#include "cuadro.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES,GRADOSLIBERTAD,ANIMACION} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
@@ -56,7 +57,7 @@ class Escena
       
       std::vector<bool> tipo_dibujado;
       GLenum tipo_dibujado_actual;
-      int escena_seleccionada = 4;
+      int escena_seleccionada = 5;
       int objeto_seleccionado = 3;
    // Objetos de la escena
    Ejes ejes;
@@ -71,6 +72,7 @@ class Escena
    ObjRevolucion * peonNegro = nullptr;
    Molino * molino = nullptr;
    Dragon * dragon = nullptr;
+   Cuadro * cuadro = nullptr;
 
    // Luces
    Luz* cuadroLuces[8] = {nullptr};
@@ -82,6 +84,11 @@ class Escena
    Material * m1 = nullptr;
    Material * m2 = nullptr;
    Material * oro = nullptr;
+
+   // Texturas
+   Textura * tex1;
+   Textura * tex2;
+   Textura * tex3;
 
    float incremento_luz = -700;   
    bool tapas = true;

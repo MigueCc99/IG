@@ -60,7 +60,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura)
       glColorPointer( 3, GL_FLOAT, 0, color_actual.data() );
 
       // Tabla de texturas
-      if(!ct.empty() && tex != nullptr){
+      if(!ct.empty() && textura != nullptr){
          glEnableClientState(GL_TEXTURE_COORD_ARRAY);
          glTexCoordPointer(2, GL_FLOAT, 0, ct.data());
       }
@@ -227,6 +227,9 @@ void Malla3D::draw(bool inmediato, GLenum tipo, int color, bool seleccion)
    if(glIsEnabled(GL_LIGHTING))
       m->aplicar();
 
+   if(textura != nullptr)
+      textura->activar();
+
    if(inmediato){
       draw_ModoInmediato(false, f);
    }else{
@@ -326,3 +329,6 @@ void Malla3D::setMaterial(Material * mat){
    this->m = mat;
 }
 
+void Malla3D::setTextura(Textura *textura){
+   this->textura = textura;
+}

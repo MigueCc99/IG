@@ -31,6 +31,7 @@ Escena::Escena()
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
    molino = new Molino();  // Modelo Jerárquico
    dragon = new Dragon();  // Modelo Jerárquico
+   cuadro = new Cuadro();
 
    // Creamos las luces
    cuadroLuces[0] = new LuzPosicional({0, 0, 0}, GL_LIGHT1, {0.2, 0.2, 0.2, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
@@ -61,6 +62,14 @@ Escena::Escena()
    peonNegro->setMaterial(m1);
    molino->setMaterial(oro);
    dragon->setMaterial(oro);
+   cuadro->setMaterial(m0);
+
+// Texturas
+   tex1 = new Textura("img/text-madera.jpg", 1);
+   tex2 = new Textura("img/alpes.jpeg", 2);
+   tex3 = new Textura("img/text-lata-1.jpg", 3);
+   cuadro->setTextura(tex1);
+   cuadro->setCoordenadas();
 }
 
 //**************************************************************************
@@ -290,6 +299,20 @@ void Escena::dibujar()
                glPopMatrix();
             }
          }
+
+// Escena P5
+         if(escena_seleccionada == 5){
+            activacionLuces();
+            glPushMatrix();
+               glEnable(GL_TEXTURE_2D);
+               glPushMatrix();
+                  glTranslatef(-350, 650, -500);
+                  glScalef(8, 8, 8);
+                  glRotatef(-90, 0, 0, 1);
+                  cuadro->draw(inmediato, tipo_dibujado_actual, color, false); 
+               glPopMatrix();
+            glPopMatrix();
+         }      
       }
    }
 }
@@ -504,7 +527,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        break;  
        case 'I' :
          if(modoMenu == SELVISUALIZACION){
-            if(escena_seleccionada == 3 || escena_seleccionada == 4){
+            if(escena_seleccionada == 3 || escena_seleccionada == 4 || escena_seleccionada == 5){
             modoIluminacion = !modoIluminacion;
             if(modoIluminacion){
                std::cout << "\nIluminación activada\n";
@@ -716,6 +739,7 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "2 -> Seleccionar escena P2\n";
     std::cout << "3 -> Seleccionar escena P3\n";
     std::cout << "4 -> Seleccionar escena P4\n";
+    std::cout << "5 -> Seleccionar escena P5\n";
     std::cout << "Q -> Salir del menú\n";
     if (escena_seleccionada == 1){
       std::cout << "Escena P1 seleccionada\n";
@@ -725,6 +749,8 @@ void Escena::pintaMenu(menu tipo){
       std::cout << "Escena P3 seleccionada\n";
     }else if (escena_seleccionada == 4){
       std::cout << "Escena P4 seleccionada\n";
+    }else if (escena_seleccionada == 5){
+      std::cout << "Escena P5 seleccionada\n";
     }
     break;
     case (SELVISUALIZACION):
@@ -736,7 +762,7 @@ void Escena::pintaMenu(menu tipo){
       std::cout << "P -> Visualización en puntos\n";
       std::cout << "A -> Visualización en ajedrez\n";
       std::cout << "T -> Gestión de tapas: " << tapas << std::endl;
-      if(escena_seleccionada == 3 || escena_seleccionada == 4)
+      if(escena_seleccionada == 3 || escena_seleccionada == 4 || escena_seleccionada == 5)
          std::cout << "I -> Activar iluminación\n";
       std::cout << "Q -> Salir del menú\n";
     }

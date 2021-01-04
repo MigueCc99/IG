@@ -46,7 +46,7 @@ class Malla3D
 
    void setMaterial(Material * mat);
 
-   void setTextura(Textura t);
+   void setTextura(Textura *textura);
 
    // Función VBO
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
@@ -61,6 +61,7 @@ class Malla3D
    std::vector<Tupla3f> nv; // Vector de normales de los vértices
    std::vector<Tupla3f> nc; // Vector de normales de las caras
    std::vector<Tupla2f> ct; // Tabla de coordenadas de texturas
+   std::vector<Tupla3f> c;
    std::vector<Tupla3f> c1;
    std::vector<Tupla3f> c2;
    std::vector<Tupla3f> c3;
@@ -71,7 +72,7 @@ class Malla3D
    // completar: tabla de colores, tabla de normales de vértices
 
    Material * m = nullptr;
-   Textura *tex = nullptr;
+   Textura *textura = nullptr;
 
 } ;
 
