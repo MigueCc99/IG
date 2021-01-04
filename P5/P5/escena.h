@@ -88,7 +88,7 @@ class Escena
 
    // Variables animación del dragón
    bool activar_animacion = false;
-   bool num_fase = 0;
+   int num_fase = 0;
 
    float incremento_alas = 0.9;
    int fase_alas = 0;
