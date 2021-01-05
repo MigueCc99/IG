@@ -543,7 +543,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if(variar_beta)
                variar_beta = false;
             variar_alfa = !variar_alfa;
-         }else if(modoMenu == NADA){
+         }else if(modoMenu == NADA || modoMenu == ANIMACION){
             if(!activar_animacion){
                modoMenu = ANIMACION;
             }else{
