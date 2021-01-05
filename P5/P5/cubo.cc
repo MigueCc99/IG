@@ -35,3 +35,14 @@ Cubo::Cubo(float lado)
 
 }
 
+void Cubo::setCoordenadas(){
+	ct.push_back(Tupla2f(0,0));
+	ct.push_back(Tupla2f(0,0.5));
+	ct.push_back(Tupla2f(0.5,0));
+	ct.push_back(Tupla2f(0.5,0.5));
+	ct.push_back(Tupla2f(0.5,0.5));
+	ct.push_back(Tupla2f(0.5,1));
+	ct.push_back(Tupla2f(1,0.5));
+	ct.push_back(Tupla2f(1,1));
+}
+

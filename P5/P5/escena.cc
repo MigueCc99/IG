@@ -57,6 +57,7 @@ Escena::Escena()
    m2 = new Material(Tupla4f(0.4,0.0,0.0,1.0),Tupla4f(1.0,0.0,0.0,1.0),Tupla4f(1.0,0.0,0.0,1.0), 10.0);
    oro = new Material(Tupla4f(0.24725,0.1995,0.0745,1.0),Tupla4f(0.75164,0.60648,0.22648,1.0),Tupla4f(0.628281,0.555802,0.366065,1.0), 10.0);
 
+   cubo->setMaterial(m0);
    tetraedro->setMaterial(m2);
    cono->setMaterial(m2);
    cilindro->setMaterial(m2);
@@ -78,6 +79,8 @@ Escena::Escena()
    cuadro->setCoordenadas();
    suelo->setTextura(tex4);
    suelo->setCoordenadas();
+   cubo->setTextura(tex1);
+   cubo->setCoordenadas();
 }
 
 //**************************************************************************
@@ -325,6 +328,11 @@ void Escena::dibujar()
                   glRotatef(-90, 0, 0, 1);
                   glScalef(8, 8, 8);
                   suelo->draw(inmediato, tipo_dibujado[2], color, false); 
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(100, -70, -50);
+                  glScalef(1, 1, 1  );
+                  cubo->draw(inmediato, tipo_dibujado[2], color, false); 
                glPopMatrix();
                glDisable(GL_TEXTURE_2D);
                if(ajedrez){

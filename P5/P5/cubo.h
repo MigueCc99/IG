@@ -26,6 +26,7 @@ class Cubo : public Malla3D
 {
    public:
    Cubo(float l=1) ;
+   void setCoordenadas();
 
 } ;
 
