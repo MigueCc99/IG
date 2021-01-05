@@ -499,6 +499,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             inmediato = true;
          }else if(modoMenu == SELESCENA){
             escena_seleccionada = 1;
+            modoIluminacion = 0;
          }else if(modoMenu == SELVISUALIZACION && modoIluminacion){
             luces[1] = !luces[1];
             std::cout << "\n\tLuz 1 activada\n";
@@ -511,6 +512,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             inmediato = false;
          }else if(modoMenu == SELESCENA){
             escena_seleccionada = 2;
+            modoIluminacion = 0;
          }else if(modoMenu == GRADOSLIBERTAD){
             desplazamiento0 = !desplazamiento0;
          }
@@ -583,7 +585,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if(variar_beta)
                variar_beta = false;
             variar_alfa = !variar_alfa;
-         }else if(modoMenu == NADA || modoMenu == ANIMACION){
+         }else if((modoMenu == NADA || modoMenu == ANIMACION) && (escena_seleccionada == 4 || escena_seleccionada == 5)){
             if(!activar_animacion){
                modoMenu = ANIMACION;
             }else{
@@ -697,7 +699,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          }
        break;  
        case 'G':
-       if(modoMenu == NADA)
+       if(modoMenu == NADA && (escena_seleccionada == 4 || escena_seleccionada == 5))
          modoMenu = GRADOSLIBERTAD;
        break;  
 
@@ -785,8 +787,10 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "E -> Selección de escena\n";  
     std::cout << "V -> Selección de modo de visualización\n";
     std::cout << "D -> Selección de modo de dibujado\n";
-    std::cout << "A -> Animación automática\n";
-    std::cout << "G -> Movimiento grados de libertad\n";
+    if(escena_seleccionada == 4 || escena_seleccionada == 5){
+      std::cout << "A -> Animación automática\n";
+      std::cout << "G -> Movimiento grados de libertad\n";
+    }
     std::cout << "Q -> Salir del programa\n";
     break;
     case (SELOBJETO):
