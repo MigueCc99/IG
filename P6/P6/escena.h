@@ -16,8 +16,9 @@
 #include "molino.h"
 #include "dragon.h"
 #include "cuadro.h"
+#include "camara.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES,GRADOSLIBERTAD,ANIMACION} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELESCENA,SELUCES,GRADOSLIBERTAD,ANIMACION,CAMARA,SELECCIONAR} menu;
 typedef enum {CUBO, TETRAEDRO} menu_figura;
 
 class Escena
@@ -57,8 +58,8 @@ class Escena
       
       std::vector<bool> tipo_dibujado;
       GLenum tipo_dibujado_actual;
-      int escena_seleccionada = 5;
-      int objeto_seleccionado = 3;
+      int escena_seleccionada = 6;
+      int objeto_seleccionado = 2;
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
@@ -72,6 +73,9 @@ class Escena
    ObjRevolucion * peonNegro = nullptr;
    Molino * molino = nullptr;
    Dragon * dragon = nullptr;
+
+   // Sol
+   Esfera * sol = nullptr;
 
    // Cuadro y suelo
    Cuadro* suelo = nullptr;
@@ -88,6 +92,7 @@ class Escena
    Material * m1 = nullptr;
    Material * m2 = nullptr;
    Material * oro = nullptr;
+   Material * sol_material = nullptr;
 
    // Texturas
    Textura * tex1;
@@ -117,6 +122,17 @@ class Escena
 
    size_t tope1 = 300, tope2 = 0, limtope2 = 30, incremento1 = 0, incremento2 = 0;
 
+   // Camaras
+   std::vector<Camara> camaras;
+   int camara_actual = 0;
+   bool camara_raton = false;
+   int x_anterior = 0, y_anterior = 0;
+   bool zoom_raton_up = false, zoom_raton_down = false;
+
+   Tupla3f centro_vista = Tupla3f(0,0,0);
+   bool seleccion = false;
+   bool fperson_camara = false;
+
    public:
 
     Escena();
@@ -125,12 +141,15 @@ class Escena
 
 	// Dibujar
 	void dibujar() ;
-    void dibujar_seleccion();
+   void dibujar_seleccion();
 
 	// Interacción con la escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
 	void teclaEspecial( int Tecla1, int x, int y );
    void animarModeloJerarquico();
+
+   void clickRaton(int boton, int estado, int x, int y);
+   void ratonMovido(int x, int y);
 
     void pintaMenu(menu tipo);
 

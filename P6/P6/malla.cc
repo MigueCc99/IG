@@ -344,3 +344,27 @@ void Malla3D::setMaterial(Material * mat){
 void Malla3D::setTextura(Textura *textura){
    this->textura = textura;
 }
+
+Tupla3f Malla3D::getCentro(){
+   return centro;
+}
+
+void Malla3D::asignaCentro(float cord_centro[]){
+  int x=0,y=0,z=0;
+  for (int i=0; i < v.size(); i++){
+    x+=v[i](0);
+    y+=v[i](1);
+    z+=v[i](2);
+  }
+  x = x/v.size();
+  y = y/v.size();
+  z = z/v.size();
+
+  centro(0) = cord_centro[0] * x + cord_centro[4] * y + cord_centro[8] * z + cord_centro[12];
+  centro(1) = cord_centro[1] * x + cord_centro[5] * y + cord_centro[9] * z + cord_centro[13];
+  centro(2) = cord_centro[2] * x + cord_centro[6] * y + cord_centro[10] * z + cord_centro[14];
+}
+
+void Malla3D::setSeleccionado(bool selecc){
+  seleccionado = selecc;
+}

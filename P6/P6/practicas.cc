@@ -94,6 +94,14 @@ void special_keys( int tecla, int x, int y )
 	glutPostRedisplay();
 }
 
+void clickRaton(int boton, int estado, int x, int y){
+	escena->clickRaton(boton,estado,x,y);
+}
+
+void ratonMovido(int x, int y){
+	escena->ratonMovido(x,y);
+}
+
 //***************************************************************************
 // Programa principal
 //
@@ -164,7 +172,9 @@ int main( int argc, char **argv )
 
 
    // ejecutar del bucle de eventos
-   glutMainLoop();
+	 glutMouseFunc( clickRaton );
+	 glutMotionFunc( ratonMovido );
+    glutMainLoop();
 
    return 0;
 }

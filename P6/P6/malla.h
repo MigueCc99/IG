@@ -48,6 +48,11 @@ class Malla3D
 
    void setTextura(Textura *textura);
 
+   void asignaCentro(float cord_centro[]);
+
+   Tupla3f getCentro();
+   void setSeleccionado(bool seleccionado);
+
    // Función VBO
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
    protected:
@@ -70,6 +75,9 @@ class Malla3D
    std::vector<Tupla3f> color_seleccion;
    std::vector<Tupla3f> color_actual;
    // completar: tabla de colores, tabla de normales de vértices
+
+   bool seleccionado = false;
+   Tupla3f centro = {0,0,0};
 
    Material * m = nullptr;
    Textura *textura = nullptr;
