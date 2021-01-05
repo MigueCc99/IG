@@ -81,6 +81,7 @@ class Escena
    Luz* cuadroLuces[8] = {nullptr};
    bool luces[8] = {false};
    bool modoIluminacion = false;
+   bool animacionPuntual = false;
 
    // Materiales
    Material * m0 = nullptr;

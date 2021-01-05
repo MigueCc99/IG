@@ -345,6 +345,7 @@ void Escena::dibujar()
 }
 
 void Escena::animarModeloJerarquico(){
+   static Tupla3f posicion{0, 0, 0};
    if(activar_animacion){
       switch(num_fase){
          case 0:
@@ -407,6 +408,34 @@ void Escena::animarModeloJerarquico(){
             break;
       }
    }
+
+   if(animacionPuntual){
+      static bool first = true, next = false;
+
+      if(first){
+         posicion[0] += 20.0;
+         posicion[1] += 20.0;
+         posicion[2] += 20.0;
+      
+         if(posicion[0] == 200){
+            next = true;
+            first = false;
+         }
+      }
+
+      if(next){
+         posicion[0] -= 20.0;
+         posicion[1] -= 20.0;
+         posicion[2] -= 20.0;
+      
+         if(posicion[0] == -200){
+            next = false;
+            first = true;
+         }         
+      }
+   }
+
+   cuadroLuces[0]->setPosicion(posicion);
 }
 
 //**************************************************************************
@@ -506,6 +535,17 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                tipo_dibujado[0] = true;
             else
                tipo_dibujado[0] = false;
+         }else if(modoMenu == SELVISUALIZACION && modoIluminacion){
+            animacionPuntual = !animacionPuntual;
+            if(animacionPuntual)
+            {
+               std::cout << "\nLuz puntual animada\n";
+            }
+
+            else
+            {
+               std::cout << "\nLuz puntual parada\n";
+            }
          }         
        break;      
        case 'L' :
@@ -807,6 +847,7 @@ void Escena::pintaMenu(menu tipo){
       }
       std::cout << "> -> Incrementar ángulo seleccionado\n";
       std::cout << "< -> Decrementar ángulo seleccionado\n";
+      std::cout << "P -> Animación automática de la luz puntual\n";
       std::cout << "I -> Desactivar iluminación\n";
       std::cout << "Q -> Salir del menú\n";
     }
