@@ -84,6 +84,8 @@ Escena::Escena()
    suelo->setCoordenadas();
    cubo->setTextura(tex1);
    cubo->setCoordenadas();
+   cilindro->setTextura(tex3);
+   cilindro->setCoordenadas();
 
     camaras.push_back(Camara(Tupla3f(500.0,200.0,500.0),Tupla3f(-30.0,70.0,-30.0),Tupla3f(0.0,1.0,0.0),0,-400.0,400.0,50.0,2000.0,400.0,-400.0));
     camaras.push_back(Camara(Tupla3f(0.0,150.0,200.0),Tupla3f(0.0,70.0,0.0),Tupla3f(0.0,1.0,0.0),1,-500.0,500.0,50.0,2000.0,400.0,-400.0));
@@ -377,8 +379,13 @@ void Escena::dibujar()
                glPopMatrix();
                glPushMatrix();
                   glTranslatef(100, -70, -50);
-                  glScalef(1, 1, 1  );
+                  glScalef(1, 1, 1);
                   cubo->draw(inmediato, tipo_dibujado[2], color, false); 
+               glPopMatrix();
+               glPushMatrix();
+                  glTranslatef(-100, -70, -50);
+                  glScalef(20, 20, 20);
+                  cilindro->draw(inmediato, tipo_dibujado[2], color, false, tapas); 
                glPopMatrix();
                glDisable(GL_TEXTURE_2D);
                if(ajedrez){
