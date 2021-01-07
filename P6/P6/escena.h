@@ -65,6 +65,7 @@ class Escena
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
    ObjPLY * beethoven = nullptr;
+   ObjPLY * hormiga = nullptr;
    ObjRevolucion * peon = nullptr;
    Cono * cono = nullptr;
    Cilindro * cilindro = nullptr;

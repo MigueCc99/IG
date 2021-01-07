@@ -23,6 +23,7 @@ Escena::Escena()
    cubo = new Cubo(50);
    tetraedro = new Tetraedro();
    beethoven = new ObjPLY("plys/beethoven.ply");
+   hormiga = new ObjPLY("plys/ant.ply");
    peon = new ObjRevolucion("plys/peon.ply",20,true);
    cono = new Cono();
    cilindro = new Cilindro();
@@ -71,6 +72,8 @@ Escena::Escena()
    cuadro->setMaterial(m0);
    suelo->setMaterial(m0);
    sol->setMaterial(sol_material);
+   beethoven->setMaterial(oro);
+   hormiga->setMaterial(m2);
 
 // Texturas
    tex1 = new Textura("img/text-madera.jpg", 1);
@@ -393,10 +396,20 @@ void Escena::dibujar()
                      glTranslatef(0,50,0);
                      dragon->draw_ajedrez(inmediato);                 
                   glPopMatrix();
+                  glPushMatrix();
+                     glTranslatef(100, -70, 50);
+                     glScalef(2,2,2);
+                     hormiga->draw_ajedrez(inmediato);                 
+                  glPopMatrix();
                }else{
                   glPushMatrix();
                      glTranslatef(0,50,0);
                      dragon->draw(inmediato, tipo_dibujado_actual, color);                 
+                  glPopMatrix();
+                  glPushMatrix();
+                     glTranslatef(100, -70, 50);
+                     glScalef(2,2,2);
+                     hormiga->draw(inmediato, tipo_dibujado_actual, color, false);                              
                   glPopMatrix();
                }
             glPopMatrix();

@@ -16,10 +16,10 @@ LuzDireccional::LuzDireccional( Tupla2f direccion, GLenum idLuzOpenGL, Tupla4f c
 }
 
 void LuzDireccional::generarFuenteLuz(){
-   Tupla4f ambiente2(0.0215,	0.1745, 0.0215, 0.6), especular2(0.7038, 0.27048, 0.0828, 0.6), difuso2(0.0, 0.0, 0.0, 0.6);
-   Material *m = new Material(difuso2, especular2, ambiente2, 0.01*128.0);
+   Material *sol_material = new Material(Tupla4f(0.24725,0.1995,0.0745,1.0),Tupla4f(0.7516,0.60648,0.22648,1.0),Tupla4f(0.628281,0.555802,0.366065,1.0), 10.0);
+   Material *suelo_tierra = new Material(Tupla4f(0.40, 0.26, 0.13,1.0),Tupla4f(0.40, 0.26, 0.13,1.0),Tupla4f(0.40, 0.26, 0.13,1.0),10.0);
    esfera = new Esfera();
-   esfera->setMaterial(m);
+   esfera->setMaterial(sol_material);
 }
 
 void LuzDireccional::variarAnguloAlpha(float incremento){
