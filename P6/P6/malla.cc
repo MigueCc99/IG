@@ -236,8 +236,13 @@ void Malla3D::draw(bool inmediato, GLenum tipo, int color, bool seleccion)
             break;
       }
 
-   if(glIsEnabled(GL_LIGHTING))
-      m->aplicar();
+   if(glIsEnabled(GL_LIGHTING)){
+      if(seleccionado){
+         material_seleccionado->aplicar();
+      }else{
+         m->aplicar();
+      }
+   }
 
    if(textura != nullptr)
       textura->activar();
