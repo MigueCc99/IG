@@ -45,6 +45,7 @@ class Malla3D
    void inicializa_colores() ;
 
    void setMaterial(Material * mat);
+   void setMaterialSeleccionado(Material * mat);
 
    void setTextura(Textura *textura);
 
@@ -80,6 +81,8 @@ class Malla3D
    Tupla3f centro = {0,0,0};
 
    Material * m = nullptr;
+   Material * material_seleccionado = nullptr;
+
    Textura *textura = nullptr;
 
 } ;

@@ -341,6 +341,10 @@ void Malla3D::setMaterial(Material * mat){
    this->m = mat;
 }
 
+void Malla3D::setMaterialSeleccionado(Material * mat){
+   material_seleccionado = mat;
+}
+
 void Malla3D::setTextura(Textura *textura){
    this->textura = textura;
 }

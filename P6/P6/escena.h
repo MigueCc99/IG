@@ -75,6 +75,10 @@ class Escena
    Molino * molino = nullptr;
    Dragon * dragon = nullptr;
 
+   // Objetos seleccion
+   Cilindro *cil;
+   ObjRevolucion *peon_white;
+
    // Sol
    Esfera * sol = nullptr;
 
@@ -94,6 +98,7 @@ class Escena
    Material * m2 = nullptr;
    Material * oro = nullptr;
    Material * sol_material = nullptr;
+   Material * mat_peon_white = nullptr;
 
    // Texturas
    Textura * tex1;

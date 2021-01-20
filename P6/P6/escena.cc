@@ -32,6 +32,10 @@ Escena::Escena()
    peonNegro = new ObjRevolucion("plys/peon.ply",20,true);
    dragon = new Dragon();  // Modelo Jerárquico
 
+   // Objetos seleccionables
+   peon_white = new ObjRevolucion("plys/peon.ply", 20, true);
+   cil = new Cilindro(20,20,3,2);
+
    // Sol
    sol = new Esfera();
 
@@ -60,6 +64,7 @@ Escena::Escena()
    m2 = new Material(Tupla4f(0.4,0.0,0.0,1.0),Tupla4f(1.0,0.0,0.0,1.0),Tupla4f(1.0,0.0,0.0,1.0), 10.0);
    sol_material = new Material(Tupla4f(0.24725,0.1995,0.0745,1.0),Tupla4f(0.7516,0.60648,0.22648,1.0),Tupla4f(0.628281,0.555802,0.366065,1.0), 10.0);
    oro = new Material(Tupla4f(0.24725,0.1995,0.0745,1.0),Tupla4f(0.75164,0.60648,0.22648,1.0),Tupla4f(0.628281,0.555802,0.366065,1.0), 10.0);
+   mat_peon_white = new Material(Tupla4f(0.3,0.3,0.3,1.0),Tupla4f(1.0,1.0,1.0,1.0),Tupla4f(1.0,1.0,1.0,1.0), 10.0);
 
    cubo->setMaterial(m0);
    tetraedro->setMaterial(m2);
@@ -74,6 +79,12 @@ Escena::Escena()
    sol->setMaterial(sol_material);
    beethoven->setMaterial(oro);
    hormiga->setMaterial(m2);
+   
+   peon_white->setMaterial(mat_peon_white);
+   cil->setMaterial(m2);
+
+   peon_white->setMaterialSeleccionado(oro);
+   cil->setMaterialSeleccionado(oro);
 
 // Texturas
    tex1 = new Textura("img/text-madera.jpg", 1);
@@ -89,6 +100,8 @@ Escena::Escena()
    cubo->setCoordenadas();
    cilindro->setTextura(tex3);
    cilindro->setCoordenadas();
+   cil->setTextura(tex1);
+   cil->setCoordenadas();
 
     camaras.push_back(Camara(Tupla3f(500.0,200.0,500.0),Tupla3f(-30.0,70.0,-30.0),Tupla3f(0.0,1.0,0.0),0,-400.0,400.0,50.0,2000.0,400.0,-400.0));
     camaras.push_back(Camara(Tupla3f(0.0,150.0,200.0),Tupla3f(0.0,70.0,0.0),Tupla3f(0.0,1.0,0.0),1,-500.0,500.0,50.0,2000.0,400.0,-400.0));
@@ -412,6 +425,22 @@ void Escena::dibujar()
                      hormiga->draw(inmediato, tipo_dibujado_actual, color, false);                              
                   glPopMatrix();
                }
+               glPushMatrix();
+                  glScalef(20,20,20);
+                  glTranslatef(1.1,1.4,0);
+                  peon_white->draw(inmediato, tipo_dibujado_actual,color,false, tapas);
+               glPopMatrix();
+               glPushMatrix();
+               glPushMatrix();
+               glScalef(20,20,20);
+               glTranslatef(5,0,0);
+
+               glTranslatef(-10,0,0);
+
+               glTranslatef(5,5,0);
+                  glTranslatef(-2,-5,-7);
+                  cil->draw(inmediato, tipo_dibujado_actual,color,false, tapas);
+               glPopMatrix();
             glPopMatrix();
          }     
       }
@@ -1034,17 +1063,20 @@ void Escena::clickRaton(int boton, int estado, int x, int y){
          if (pixels[0] == 0 && pixels[1] == 1 && pixels[2] == 1){
             camaras[camara_actual].setAt(Tupla3f(-30,15,-150));
 
-            cubo->setSeleccionado(false);
+            peon_white->setSeleccionado(false);
+            cil->setSeleccionado(true);
             fperson_camara = false;
          }else if (pixels[0] == 1 &&  pixels[2] == 0){
-            camaras[camara_actual].setAt(Tupla3f(5,0,5)); 
-            cubo->setSeleccionado(true);
+            camaras[camara_actual].setAt(Tupla3f(5,0,5));
+            peon_white->setSeleccionado(true);
+            cil->setSeleccionado(false);
             fperson_camara = false;           
          }else{
             if(!fperson_camara){
                camaras[camara_actual].setAt(Tupla3f(0,70,0));
                camaras[camara_actual].setEye(Tupla3f(0,70,300));
-               cubo->setSeleccionado(false);
+               peon_white->setSeleccionado(false);
+               cil->setSeleccionado(false);
                fperson_camara = true;
             }
          }
@@ -1102,11 +1134,23 @@ void Escena::dibujar_seleccion(){
   //ejes.draw();
 
    glPushMatrix();
-   glScalef(1, 1, 1);
-   glTranslatef(100, -70, -50);
-   cubo->draw(true, GL_FILL,3,true);
-   glGetFloatv(GL_MODELVIEW_MATRIX, mat);
-   cubo->asignaCentro(mat);
+      glScalef(20,20,20);
+      glTranslatef(1.1,1.4,0);
+      peon_white->draw(true, GL_FILL, 3, true, tapas);
+      glGetFloatv(GL_MODELVIEW_MATRIX, mat);
+      peon_white->asignaCentro(mat);
+   glPopMatrix();
+   glPushMatrix();
+      glScalef(20,20,20);
+      glTranslatef(5,0,0);
+
+      glTranslatef(-10,0,0);
+
+      glTranslatef(5,5,0);
+      glTranslatef(-2,-5,-7);
+      cil->draw(true, GL_FILL, 4, true, tapas);
+      glGetFloatv(GL_MODELVIEW_MATRIX, mat);
+      cil->asignaCentro(mat);
    glPopMatrix();
    glEnable(GL_DITHER);
 }
