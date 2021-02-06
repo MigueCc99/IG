@@ -493,6 +493,7 @@ void Escena::animarModeloJerarquico(){
          case 0:
             dragon->modificarGiroAlas(incremento_alas);
             dragon->modificarGiroCola(incremento_alas);
+            dragon->modificarGiroCuello(incremento_alas);
             tope2++;
             if(tope2 > limtope2){
                limtope2 = 60;
@@ -503,6 +504,7 @@ void Escena::animarModeloJerarquico(){
          case 1:
             dragon->modificarGiroAlas(-incremento_alas);
             dragon->modificarGiroCola(-incremento_alas);
+            dragon->modificarGiroCuello(-incremento_alas);
             tope2++;
             if(tope2 > 60){
                fase_alas = 0;
@@ -621,7 +623,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             escena_seleccionada = 2;
             modoIluminacion = 0;
          }else if(modoMenu == GRADOSLIBERTAD){
-            desplazamiento0 = !desplazamiento0;
+            giro2 = !giro2;
          }else if(modoMenu == CAMARA){
             camara_actual = 2;
          }
@@ -629,6 +631,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
        case '3' :
          if(modoMenu == SELESCENA){
             escena_seleccionada = 3;
+         }else if(modoMenu == GRADOSLIBERTAD){
+            desplazamiento0 = !desplazamiento0;
          }
        break; 
        case '4' :
@@ -756,6 +760,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if(giro1){
                dragon->modificarGiroAlas(alas_speed);
             }
+            if(giro2){
+               dragon->modificarGiroCuello(cuello_speed);
+            }
             if(desplazamiento0){
                dragon->modificarDesplazamiento(desplazamiento_speed,desplazamiento_speed);
             }
@@ -776,6 +783,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
              if (giro1){
                 dragon->modificarGiroAlas(-alas_speed);
              }
+             if(giro2){
+               dragon->modificarGiroCuello(-cuello_speed);
+            }
              if (desplazamiento0){
                 dragon->modificarDesplazamiento(-desplazamiento_speed,-desplazamiento_speed);
              }
@@ -794,6 +804,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          if(giro1){
             alas_speed += 0.1;
          }
+         if(giro2){
+            cuello_speed += 0.1;
+         }
          if(desplazamiento0){
             desplazamiento_speed += 0.1;
          }
@@ -804,6 +817,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          }
          if(giro1){
             alas_speed -= 0.1;
+         }
+         if(giro2){
+            cuello_speed += 0.1;
          }
          if(desplazamiento0){
             desplazamiento_speed -= 0.1;
@@ -992,7 +1008,8 @@ void Escena::pintaMenu(menu tipo){
     case (GRADOSLIBERTAD):
     std::cout << "0 -> Activar giro cola (" << giro0 << ")\n";
     std::cout << "1 -> Activar giro alas (" << giro1 << ")\n";
-    std::cout << "2 -> Activar desplazamiento (" << desplazamiento0 << ")\n";
+    std::cout << "2 -> Activar giro cuello (" << giro2 << ")\n";
+    std::cout << "3 -> Activar desplazamiento (" << desplazamiento0 << ")\n";
     std::cout << "+ -> Aumentar grados de libertad\n";
     std::cout << "- -> Disminuir grados de libertad\n";
     std::cout << "M -> Aumentar velocidad de partes seleccionadas\n";

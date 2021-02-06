@@ -20,6 +20,7 @@ void Dragon::draw(bool inmediato, GLenum tipo, int color){
         cuerpo->draw(inmediato,tipo,color,false);
         glPushMatrix();
             glTranslatef(0,0,32);
+            glRotatef(giro_cuello,1,0,0);
             cuello->draw(inmediato,tipo,color,false);
             glTranslatef(0,0,50);
             cabeza->draw(inmediato,tipo,color,false);
@@ -54,6 +55,7 @@ void Dragon::draw_ajedrez(bool inmediato){
         cuerpo->draw_ajedrez(inmediato);
         glPushMatrix();
             glTranslatef(0,0,32);
+            glRotatef(giro_cuello,1,0,0);
             cuello->draw_ajedrez(inmediato);
             glTranslatef(0,0,50);
             cabeza->draw_ajedrez(inmediato);
@@ -87,6 +89,11 @@ void Dragon::setMaterial(Material *mat){
     cabeza->setMaterial(mat);
     cola->setMaterial(mat);
     ala->setMaterial(mat);
+}
+
+void Dragon::modificarGiroCuello(float valor){
+	if (giro_cuello + valor > -50 && giro_cuello + valor < 50)
+	giro_cuello += valor;
 }
 
 void Dragon::modificarGiroCola(float valor){

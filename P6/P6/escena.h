@@ -53,7 +53,7 @@ class Escena
       bool inmediato = true;
    // SELECTOR DE FORMA DE DIBUJADO
       bool ajedrez = false;
-      bool giro0 = false, giro1 = false, desplazamiento0 = false;
+      bool giro0 = false, giro1 = false, giro2 = false, desplazamiento0 = false;
       bool variar_alfa, variar_beta = false;
       
       std::vector<bool> tipo_dibujado;
@@ -118,6 +118,7 @@ class Escena
 
    float cola_speed = 0.5;
    float alas_speed = 0.5;
+   float cuello_speed = 0.5;
    float desplazamiento_speed = 5.5;
 
    float incremento_desplazamiento = 0.9;

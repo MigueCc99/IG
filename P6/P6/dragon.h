@@ -11,7 +11,7 @@
 class Dragon{
     public:
     
-    float giro_cola, giro_ala, desplazamientoy, desplazamientoz, rotacionx;
+    float giro_cuello, giro_cola, giro_ala, desplazamientoy, desplazamientoz, rotacionx;
 
     Dragon_cuerpo * cuerpo = nullptr;
     Dragon_cuello * cuello = nullptr;
@@ -25,6 +25,7 @@ class Dragon{
     void draw_ajedrez(bool inmediato);
     void setMaterial(Material *mat);
 
+    void modificarGiroCuello(float valor);
     void modificarGiroCola(float valor);
     void modificarGiroAlas(float valor);
     void modificarDesplazamiento(float valory, float valorz);
