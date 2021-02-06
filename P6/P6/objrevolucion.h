@@ -30,15 +30,13 @@ class ObjRevolucion : public Malla3D
    public:
     ObjRevolucion();
     ObjRevolucion(const std::string & archivo, int num_instancias, bool tapas) ;
-    ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapas) ;
+    ObjRevolucion(std::vector<Tupla3f> perfil, int num_instancias, bool tapas) ;
     void setTapas(bool tapas);
     void draw(bool inmediato, GLenum tipo, int color, bool seleccion, bool tapas);
     void draw_ajedrez(bool inmediato, bool tapas);
 
 protected:
 
-    int TAM;
-    int figura_sin_tapas;
     std::vector<Tupla3i> fs;
     int ejeRevolucion = 0;
     bool tapas;

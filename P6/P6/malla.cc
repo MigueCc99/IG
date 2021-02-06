@@ -12,18 +12,18 @@ Malla3D::Malla3D(){}
 
 // Visualización en modo inmediato con 'glDrawElements'
 
-void Malla3D::draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura)
+void Malla3D::draw_ModoInmediato(bool ajedrez)
 {
 
    if(ajedrez){
       std::vector<Tupla3i> par;
       std::vector<Tupla3i> impar;
       inicializa_colores();
-      for(int i=0; i<figura.size(); i++){
+      for(int i=0; i<TAM; i++){
          if(i%2 == 0)
-            par.push_back(figura[i]);
+            par.push_back(f[i]);
          else
-            impar.push_back(figura[i]);
+            impar.push_back(f[i]);
       }
       
       glColorPointer(3,GL_FLOAT,0, c2.data() );
@@ -67,7 +67,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura)
 
       // visualizar, indicando: tipo de primitiva, número de índices,
       // tipo de los índices, y dirección de la tabla de índices
-      glDrawElements( GL_TRIANGLES, figura.size()*3, GL_UNSIGNED_INT, figura.data());
+      glDrawElements( GL_TRIANGLES, TAM*3, GL_UNSIGNED_INT, f.data());
 
       // deshabilitar el array de vértices
       glDisableClientState( GL_VERTEX_ARRAY );
@@ -84,18 +84,18 @@ void Malla3D::draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura)
 // -----------------------------------------------------------------------------
 // Visualización en modo diferido con 'glDrawElements' (usando VBOs)
 
-void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
+void Malla3D::draw_ModoDiferido(bool ajedrez)
 {
 
    if(ajedrez){
       std::vector<Tupla3i> par;
       std::vector<Tupla3i> impar;
       inicializa_colores();
-      for(int i=0; i<figura.size(); i++){
+      for(int i=0; i<TAM; i++){
          if(i%2 == 0)
-            par.push_back(figura[i]);
+            par.push_back(f[i]);
          else
-            impar.push_back(figura[i]);
+            impar.push_back(f[i]);
       }
 
       id_vbo_ver = 0, id_vbo_tri = 0, id_vbo_col = 0;
@@ -161,7 +161,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
       id_vbo_ver = id_vbo_tri = id_vbo_col = 0;
       if (id_vbo_ver == 0 || id_vbo_tri == 0 || id_vbo_col == 0){
          id_vbo_ver = CrearVBO (GL_ARRAY_BUFFER, (3*v.size())*sizeof(float), v.data() );
-         id_vbo_tri = CrearVBO (GL_ELEMENT_ARRAY_BUFFER, (3*figura.size())*sizeof(int), figura.data() );
+         id_vbo_tri = CrearVBO (GL_ELEMENT_ARRAY_BUFFER, (3*TAM)*sizeof(int), f.data() );
          id_vbo_col = CrearVBO (GL_ARRAY_BUFFER, (3*color_actual.size())*sizeof(float), color_actual.data() );
          id_vbo_nor = CrearVBO (GL_ARRAY_BUFFER, (3*nv.size())*sizeof(float), nv.data() );
          id_vbo_tex = CrearVBO (GL_ARRAY_BUFFER, (3*ct.size())*sizeof(float), ct.data() );
@@ -197,7 +197,7 @@ void Malla3D::draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura)
          glPolygonMode( GL_FRONT, visualizacion );
       glPointSize(5.0);
 
-      glDrawElements( GL_TRIANGLES, 3* figura.size(), GL_UNSIGNED_INT, 0 ) ;
+      glDrawElements( GL_TRIANGLES, 3* TAM, GL_UNSIGNED_INT, 0 ) ;
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
       glDisableClientState( GL_VERTEX_ARRAY );
@@ -244,23 +244,25 @@ void Malla3D::draw(bool inmediato, GLenum tipo, int color, bool seleccion)
       }
    }
 
+   this->TAM = f.size();
    if(textura != nullptr)
       textura->activar();
 
    if(inmediato){
-      draw_ModoInmediato(false, f);
+      draw_ModoInmediato(false);
    }else{
-      draw_ModoDiferido(false, f);
+      draw_ModoDiferido(false);
    }
 
 }
 
 void Malla3D::draw_ajedrez(bool inmediato){
-
+   
+   this->TAM = f.size();
    if(inmediato)
-      draw_ModoInmediato(true,f);
+      draw_ModoInmediato(true);
    else
-      draw_ModoDiferido(true,f);
+      draw_ModoDiferido(true);
    
    /*
    std::vector<Tupla3i> par;

@@ -32,10 +32,10 @@ class Malla3D
    Malla3D();
 
    // dibuja el objeto en modo inmediato
-   void draw_ModoInmediato(bool ajedrez, std::vector<Tupla3i> figura);
+   void draw_ModoInmediato(bool ajedrez);
 
    // dibuja el objeto en modo diferido (usando VBOs)
-   void draw_ModoDiferido(bool ajedrez, std::vector<Tupla3i> figura);
+   void draw_ModoDiferido(bool ajedrez);
 
    // función que redibuja el objeto
    // está función llama a 'draw_ModoInmediato' (modo inmediato)
@@ -76,6 +76,9 @@ class Malla3D
    std::vector<Tupla3f> color_seleccion;
    std::vector<Tupla3f> color_actual;
    // completar: tabla de colores, tabla de normales de vértices
+
+   int TAM = 0;
+   int figura_sin_tapas = 0;
 
    bool seleccionado = false;
    Tupla3f centro = {0,0,0};

@@ -32,7 +32,6 @@ Cubo::Cubo(float lado)
 	f[1] = Tupla3i (3,7,6);
 	f[9] = Tupla3i (5,0,4);
 	f[8] = Tupla3i (5,1,0);
-
 }
 
 void Cubo::setCoordenadas(){

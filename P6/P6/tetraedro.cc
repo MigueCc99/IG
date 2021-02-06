@@ -18,7 +18,5 @@ Tetraedro::Tetraedro()
    	f.push_back(t2);
    	f.push_back(t3);
    	f.push_back(t4);
-
-
 }
 
