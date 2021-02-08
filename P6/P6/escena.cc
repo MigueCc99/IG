@@ -47,6 +47,11 @@ Escena::Escena()
    cuadroLuces[0] = new LuzPosicional({0, 0, 0}, GL_LIGHT1, {0.2, 0.2, 0.2, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
    cuadroLuces[1] = new LuzDireccional({0, 0}, GL_LIGHT2, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0}, {1.0, 1.0, 1.0, 1.0});
 
+   // Cámaras
+   cuadroCamaras[0] = new Camara({0, 0, 600}, {0, 0, 0}, {0, 1, 0}, 1, 50, 50);
+   cuadroCamaras[1] = new Camara({-300, 200, 600}, {0, 0, 0}, {0, 1, 0}, 0, 300, 300);
+   cuadroCamaras[2] = new Camara({600, 200, 600}, {0, 0, 0}, {0, 1, 0}, 0, 600, 600);
+
    /*
       cuadroLuces[0] = new LuzPosicional( Tupla3f(0.0, 0.0, 0.0), GL_LIGHT0, Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0), Tupla4f(1.0, 1.0, 1.0, 1.0));;
       cuadroLuces[1] = new LuzDireccional( Tupla3f(100.0, 100.0, 100.0), GL_LIGHT1, Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0), Tupla4f(0.2, 1.0, 0.2, 1.0));
@@ -103,10 +108,6 @@ Escena::Escena()
    cil->setTextura(tex1);
    cil->setCoordenadas();
 
-    camaras.push_back(Camara(Tupla3f(500.0,200.0,500.0),Tupla3f(-30.0,70.0,-30.0),Tupla3f(0.0,1.0,0.0),0,-400.0,400.0,50.0,2000.0,400.0,-400.0));
-    camaras.push_back(Camara(Tupla3f(0.0,150.0,200.0),Tupla3f(0.0,70.0,0.0),Tupla3f(0.0,1.0,0.0),1,-500.0,500.0,50.0,2000.0,400.0,-400.0));
-    camaras.push_back(Camara(Tupla3f(-500.0,200.0,500.0),Tupla3f(-30.0,70.0,-100.0),Tupla3f(0.0,1.0,0.0),0,-400.0,400.0,50.0,2000.0,400.0,-400.0));
-
 }
 
 //**************************************************************************
@@ -128,7 +129,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
 
-   change_projection( float(UI_window_width)/float(UI_window_height) );
+   change_projection();
 	glViewport( 0, 0, UI_window_width, UI_window_height );
    pintaMenu(modoMenu);
    porDefecto();
@@ -146,9 +147,11 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 void Escena::dibujar()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
+
 	change_observer();
    glDisable(GL_LIGHTING);
     ejes.draw();
+
     // COMPLETAR
     //   Dibujar los diferentes elementos de la escena
    for(int i=0; i<tipo_dibujado.size(); i++){
@@ -613,7 +616,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          }else if(modoMenu == GRADOSLIBERTAD){
             giro1 = !giro1;
          }else if(modoMenu == CAMARA){
-            camara_actual = 1;
+            camaras[1] = !camaras[1];
+            camaraActiva = 1;
+            std::cout << "\n\tCámara 1 activada\n";
          }
        break;
        case '2' :
@@ -625,7 +630,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          }else if(modoMenu == GRADOSLIBERTAD){
             giro2 = !giro2;
          }else if(modoMenu == CAMARA){
-            camara_actual = 2;
+            camaras[2] = !camaras[2];
+            camaraActiva = 2;
+            std::cout << "\n\tCámara 2 activada\n";
          }
        break;  
        case '3' :
@@ -726,7 +733,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          }else if(modoMenu == GRADOSLIBERTAD){
             giro0 = !giro0;
          }else if(modoMenu == CAMARA){
-            camara_actual = 0;
+            camaras[0] = !camaras[0];
+            camaraActiva = 0;
+            std::cout << "\n\tCámara 0 activada\n";
          }
        break;       
        case 'B' :
@@ -842,30 +851,29 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
    switch ( Tecla1 )
    {
 	   case GLUT_KEY_LEFT:
-         camaras[camara_actual].rotarYExaminar(M_PI/16);
+         cuadroCamaras[camaraActiva]->rotarXExaminar(-1);
          break;
 	   case GLUT_KEY_RIGHT:
-         camaras[camara_actual].rotarYExaminar(-M_PI/16);
+         cuadroCamaras[camaraActiva]->rotarXExaminar(1);
          break;
 	   case GLUT_KEY_UP:
-         camaras[camara_actual].rotarXExaminar(M_PI/16);
+         cuadroCamaras[camaraActiva]->rotarYExaminar(1);
          break;
 	   case GLUT_KEY_DOWN:
-         camaras[camara_actual].rotarXExaminar(-M_PI/16);
+         cuadroCamaras[camaraActiva]->rotarYExaminar(-1);
          break;
-	   case GLUT_KEY_PAGE_UP:
-         camaras[camara_actual].zoom(1.2);
-         change_projection(1);
+      case GLUT_KEY_PAGE_UP:
+         cuadroCamaras[camaraActiva]->zoom(1.0);
+         change_projection();
          break;
-	   case GLUT_KEY_PAGE_DOWN:
-         camaras[camara_actual].zoom(1/1.2);
-         change_projection(1);
+      case GLUT_KEY_PAGE_DOWN:
+         cuadroCamaras[camaraActiva]->zoom(-1.0);
+         change_projection();
          break;
 	}
 
 	//std::cout << Observer_distance << std::endl;
 }
-
 //**************************************************************************
 // Funcion para definir la transformación de proyeccion
 //
@@ -873,13 +881,11 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
 //
 //***************************************************************************
 
-void Escena::change_projection( const float ratio_xy )
+void Escena::change_projection()
 {
    glMatrixMode( GL_PROJECTION );
    glLoadIdentity();
-   const float wx = float(Height)*ratio_xy ;
-   camaras[camara_actual].setProyeccion();
-   //glFrustum( -wx, wx, -Height, Height, Front_plane, Back_plane );
+   cuadroCamaras[camaraActiva]->setProyeccion();
 }
 //**************************************************************************
 // Funcion que se invoca cuando cambia el tamaño de la ventana
@@ -889,9 +895,7 @@ void Escena::redimensionar( int newWidth, int newHeight )
 {
    Width  = newWidth/10;
    Height = newHeight/10;
-   camaras[camara_actual].setLeft(camaras[camara_actual].getBottom()*(Width/Height));
-   camaras[camara_actual].setRight(camaras[camara_actual].getTop()*(Width/Height));
-   change_projection( float(newHeight)/float(newWidth) );
+   change_projection();
    glViewport( 0, 0, newWidth, newHeight );
 }
 
@@ -904,10 +908,7 @@ void Escena::change_observer()
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   /*glTranslatef( 0.0, 0.0, -Observer_distance );
-   glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
-   glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );*/
-   camaras[camara_actual].setObserver();
+   cuadroCamaras[camaraActiva]->setObserver();
 }
 
 void Escena::pintaMenu(menu tipo){
@@ -1022,7 +1023,7 @@ void Escena::pintaMenu(menu tipo){
     std::cout << "Q -> Salir del menú\n";
     break;
     case (CAMARA):
-    std::cout << "Cámara actual: " << camara_actual << std::endl;
+    std::cout << "Cámara actual: " << camaraActiva << std::endl;
     std::cout << "0 -> Selección cámara 0\n";
     std::cout << "1 -> Selección cámara 1\n";
     std::cout << "2 -> Seleccion cámara 2\n";
@@ -1067,76 +1068,55 @@ void Escena::porDefecto(){
 }
 
 void Escena::clickRaton(int boton, int estado, int x, int y){
-   if (boton == GLUT_LEFT_BUTTON){
-      GLfloat pixels[3];
-      GLint viewport[4];
-      if(estado == GLUT_DOWN){
-         seleccion = true;
-         dibujar_seleccion();
-         seleccion = false;
-         glGetIntegerv(GL_VIEWPORT,viewport);
-         glReadPixels(x,viewport[3]-y,1,1,GL_RGB,GL_FLOAT,pixels);
-
-         if (pixels[0] == 0 && pixels[1] == 1 && pixels[2] == 1){
-            camaras[camara_actual].setAt(Tupla3f(-30,15,-150));
-
-            peon_white->setSeleccionado(false);
-            cil->setSeleccionado(true);
-            fperson_camara = false;
-         }else if (pixels[0] == 1 &&  pixels[2] == 0){
-            camaras[camara_actual].setAt(Tupla3f(5,0,5));
-            peon_white->setSeleccionado(true);
-            cil->setSeleccionado(false);
-            fperson_camara = false;           
-         }else{
-            if(!fperson_camara){
-               camaras[camara_actual].setAt(Tupla3f(0,70,0));
-               camaras[camara_actual].setEye(Tupla3f(0,70,300));
-               peon_white->setSeleccionado(false);
-               cil->setSeleccionado(false);
-               fperson_camara = true;
-            }
+   switch(boton){
+      case GLUT_RIGHT_BUTTON:
+         if(estado == GLUT_DOWN){
+            moviendoCamaraFP = true;
+            xant = x;
+            yant = y;
          }
-      }
+
+      break;
+
+      case GLUT_LEFT_BUTTON:
+         if(estado == GLUT_DOWN){
+            xleido = x;
+            yleido = y;
+            dibujar_seleccion();
+         }
+      break;
+
+      // Rueda del ratón hacia arriba
+      case 3:
+         cuadroCamaras[camaraActiva]->zoom(1.0);
+         change_projection();
+      break;
+
+      // Rueda del ratón hacia abajo
+      case 4:
+         cuadroCamaras[camaraActiva]->zoom(-1.0);
+         change_projection();
+      break;      
    }
-   if(boton == GLUT_RIGHT_BUTTON){
-      if (estado ==  GLUT_DOWN){
-         camara_raton = true;
-         x_anterior = x;
-         y_anterior = y;
-      }else{
-         camara_raton = false;
-      }
-   }
-   if (boton == 3)
-      zoom_raton_up = true;
-   else if (boton == 4)
-      zoom_raton_down = true;
 }
 
 void Escena::ratonMovido(int x, int y){
-  if (camara_raton == true){
-    std::cout << x-x_anterior << std::endl;
-    if (fperson_camara){
-      camaras[camara_actual].rotarYFirstPerson(-1*((x-x_anterior)*M_PI)/128);
-      camaras[camara_actual].rotarXFirstPerson(-1*((y-y_anterior)*M_PI)/128);
-    }else{
-      camaras[camara_actual].rotarYExaminar(-1*((x-x_anterior)*M_PI)/128);
-      camaras[camara_actual].rotarXExaminar(-1*((y-y_anterior)*M_PI)/128);
-    }
-    x_anterior = x;
-    y_anterior = y;
-    change_observer();
-  }
-  if (zoom_raton_up){
-    camaras[camara_actual].zoom(1.2);
-    change_projection(1);
-    zoom_raton_up = false;
-  }else if (zoom_raton_down){
-    camaras[camara_actual].zoom(1/1.2);
-    change_projection(1);
-    zoom_raton_down = false;
-  }
+   if(moviendoCamaraFP)
+   {
+      if(cuadroCamaras[camaraActiva]->getRotando())
+      {
+         cuadroCamaras[camaraActiva]->rotarXExaminar((x-xant)*0.1);
+         cuadroCamaras[camaraActiva]->rotarYExaminar((y-yant)*0.1);
+      }
+      else
+      {
+         cuadroCamaras[camaraActiva]->rotarXFirstPerson((x-xant)*0.1);
+         cuadroCamaras[camaraActiva]->rotarYFirstPerson((y-yant)*0.1);         
+      }
+
+      xant = x;
+      yant = y;
+   }
 }
 
 
@@ -1149,6 +1129,7 @@ void Escena::dibujar_seleccion(){
   glDisable(GL_LIGHT1);
   glDisable(GL_LIGHTING);
   //ejes.draw();
+  coloresSeleccionables();
 
    glPushMatrix();
       glScalef(20,20,20);
@@ -1170,4 +1151,81 @@ void Escena::dibujar_seleccion(){
       cil->asignaCentro(mat);
    glPopMatrix();
    glEnable(GL_DITHER);
+
+   // Obtenemos el píxel sobre el que hemos pulsado
+   seleccionPixel();
+   xleido = -1;
+   yleido = -1;
+}
+
+void Escena::objetoSeleccionado(int objSelec, Malla3D *obj){
+   if(objSelec != objetoActivo)
+   {
+      switch(objSelec)
+      {
+         case 0: 
+            std::cout << "Cilindro seleccionado" << std::endl; 
+            cil->setSeleccionado(true);
+         break;
+         case 1: 
+            std::cout << "Peon Blanco seleccionado" << std::endl; 
+            peon_white->setSeleccionado(true);
+         break;
+      }
+
+      objetoActivo = objSelec;
+      rotacionSeleccion = true;
+
+      if(objSelec == 0)
+         cuadroCamaras[camaraActiva]->setAt(Tupla3f(-30,15,-150));
+      else if(objSelec == 1)
+         cuadroCamaras[camaraActiva]->setAt(Tupla3f(5,0,5));
+
+      // ¿Estamos rotando en la cámara?
+      cuadroCamaras[camaraActiva]->setRotando(true);
+   }
+   else{
+      switch(objSelec)
+      {
+         case 0: 
+            std::cout << "Cilindro deseleccionado" << std::endl; 
+            cil->setSeleccionado(false);
+         break;
+         case 1: 
+            std::cout << "Peon Blanco deseleccionado" << std::endl;
+            peon_white->setSeleccionado(false); 
+         break;
+      } 
+
+      objetoActivo = -1;
+      rotacionSeleccion = false;
+      cuadroCamaras[camaraActiva]->setAt({0, 0, 0});
+
+      // ¿Estamos rotando en la cámara?
+      cuadroCamaras[camaraActiva]->setRotando(false);
+   }
+}
+
+void Escena::seleccionPixel(){
+   GLint viewport[4];
+   GLfloat seleccionado[3];
+
+   // Vuelca el entero del viewport
+   glGetIntegerv(GL_VIEWPORT, viewport);
+
+   // Lee los pixeles
+   glReadPixels(xleido, viewport[3]-yleido, 1, 1, GL_RGB, GL_FLOAT, (void *) seleccionado);
+
+   // Seleccionamos ahora el objeto según el píxel seleccionado
+   if(seleccionado[0] == 0 && seleccionado[1] && seleccionado[2] == 1){
+      objetoSeleccionado(0, peon_white);
+   }
+   else if(seleccionado[0] == 1 && seleccionado[2] == 0){
+      objetoSeleccionado(1, cil);
+   }
+}
+
+void Escena:: coloresSeleccionables(){
+   peon_white->cambiarColor(1.0, 0.9, 0.1);
+   cil->cambiarColor(0.8, 0.8, 0.8);
 }

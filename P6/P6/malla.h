@@ -54,6 +54,9 @@ class Malla3D
    Tupla3f getCentro();
    void setSeleccionado(bool seleccionado);
 
+   // Cambiar el color
+   void cambiarColor(float R, float G, float B);
+
    // Función VBO
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
    protected:

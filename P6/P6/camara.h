@@ -8,39 +8,42 @@ protected:
     Tupla3f eye;
     Tupla3f at;
     Tupla3f up;
-    int tipo;       // ORTOGONAL o PERSPECTIVA
-    float left, right, near, far, top, bottom;  // o bien aspect, fov, near, far;
+
+    bool rotando = false;
+
+    int tipo;       // ORTOGONAL o PERSPECTIVA (ortogonal = 0, perspectiva = 1)
+    float fovY, aspect, near, far, top, left;
+
+    // Tuplas para el vector dirección y los ejes sobre la cámara
+    Tupla3f vectorDirector;
+    Tupla3f ejeX;
+    Tupla3f ejeY;
+
+    // Métodos relacionados con la matriz de rotación
+    Tupla3f matrizRotacion(Tupla3f eje, Tupla3f vec, float angle);
+    void rotarFirstPerson(float angle, char eje);
+    void rotarExaminar(float angle, char eje);
 public:
-    Camara(Tupla3f eye, Tupla3f at, Tupla3f up, int tipo, float left, float right, float near, float far, float top, float bottom) ; // con los parametros necesarios
+    // Constructores
+    Camara();
+    Camara(Tupla3f eye, Tupla3f at, Tupla3f up, int tipo, float alto, float ancho);
+    
+    // Métodos de rotación
     void rotarXExaminar(float angle);
     void rotarYExaminar(float angle);
     void rotarZExaminar(float angle);
     void rotarXFirstPerson(float angle);
     void rotarYFirstPerson(float angle);
     void rotarZFirstPerson(float angle);
+
+
     void mover(float x, float y, float z);
     void zoom(float factor);
     void setObserver();
     void setProyeccion();
 
-    Tupla3f getEye();
-    Tupla3f getAt();
-    Tupla3f getUp();
-    float getLeft();
-    float getRight();
-    float getNear();
-    float getFar();
-    float getTop();
-    float getBottom();
-
-    void setEye(Tupla3f eye);
-    void setAt(Tupla3f at);
-    void setUp(Tupla3f up);
-    void setLeft(float left);
-    void setRight(float right);
-    void setNear(float near);
-    void setFar(float far);
-    void setTop(float top);
-    void setBottom(float bottom);
+    inline void setAt(Tupla3f punto){this->at = punto;};
+    inline void setRotando(bool rot){this->rotando = rot;};
+    inline bool getRotando(){return this->rotando;};
 };
 #endif

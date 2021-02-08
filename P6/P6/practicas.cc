@@ -29,13 +29,6 @@ void draw_scene(void)
 	glutSwapBuffers();
 }
 
-void funcion_idle(){
-	if (escena != 0){
-		escena->animarModeloJerarquico();
-	}
-	glutPostRedisplay();
-}
-
 //***************************************************************************
 // Funcion llamada cuando se produce un cambio en el tamaño de la ventana
 //
@@ -94,12 +87,36 @@ void special_keys( int tecla, int x, int y )
 	glutPostRedisplay();
 }
 
+// Función idle para las animaciones
+void funcion_idle(){
+	if (escena != 0){
+		escena->animarModeloJerarquico();
+	}
+	glutPostRedisplay();
+}
+
 void clickRaton(int boton, int estado, int x, int y){
 	escena->clickRaton(boton,estado,x,y);
 }
 
 void ratonMovido(int x, int y){
 	escena->ratonMovido(x,y);
+}
+
+// Función para los botones del ratón
+void funcion_click( int boton, int estado, int x, int y )
+{
+   if (escena != NULL)
+      escena->clickRaton( boton, estado, x, y );
+   glutPostRedisplay();
+}
+
+// Función para el mvoimiento del ratón
+void funcion_motion( int x, int y )
+{
+   if (escena != NULL)
+      escena->ratonMovido( x, y );
+   glutPostRedisplay();
 }
 
 //***************************************************************************
@@ -154,6 +171,12 @@ int main( int argc, char **argv )
    // asignación de la funcion llamada "tecla_Especial" al evento correspondiente
    glutSpecialFunc( special_keys );
 
+   // Callback para los botones del ratón
+   glutMouseFunc( funcion_click );
+
+   // Callback para movimiento del ratón
+   glutMotionFunc( funcion_motion );
+   
    // inicialización de librería GLEW (solo en Linux)
    #ifdef LINUX
    const GLenum codigoError = glewInit();
@@ -170,10 +193,7 @@ int main( int argc, char **argv )
    escena->inicializar( UI_window_width, UI_window_height );
 
 
-
    // ejecutar del bucle de eventos
-	 glutMouseFunc( clickRaton );
-	 glutMotionFunc( ratonMovido );
     glutMainLoop();
 
    return 0;

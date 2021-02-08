@@ -39,11 +39,9 @@ class Escena
    GLfloat Width, Height, Front_plane, Back_plane;
 
     // Transformación de cámara
-	void change_projection( const float ratio_xy );
+	void change_projection();
 	void change_observer();
     
-
-
    void clear_window();
 
    // SELECTORES DE MENÚ
@@ -129,16 +127,25 @@ class Escena
 
    size_t tope1 = 300, tope2 = 0, limtope2 = 30, incremento1 = 0, incremento2 = 0;
 
-   // Camaras
-   std::vector<Camara> camaras;
-   int camara_actual = 0;
-   bool camara_raton = false;
-   int x_anterior = 0, y_anterior = 0;
-   bool zoom_raton_up = false, zoom_raton_down = false;
+   // Modo cámara
+   bool modoCamara = false;
 
-   Tupla3f centro_vista = Tupla3f(0,0,0);
-   bool seleccion = false;
-   bool fperson_camara = false;
+   // Vector de cámaras de la escena
+   Camara* cuadroCamaras[8] = {nullptr};
+
+   // Activación de las cámaras
+   bool camaras[8] = {false};
+
+   // Cámara activa
+   int camaraActiva = 0;
+
+   // Estado del ratón
+   bool moviendoCamaraFP = false;
+   int xant = 0, yant = 0;
+
+   // Variables para la selección de la escena
+   int xleido = -1, yleido = -1, objetoActivo = -1;
+   bool rotacionSeleccion = false;
 
    public:
 
@@ -149,6 +156,7 @@ class Escena
 	// Dibujar
 	void dibujar() ;
    void dibujar_seleccion();
+   void dibujaSeleccion();
 
 	// Interacción con la escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
@@ -163,6 +171,11 @@ class Escena
     void activacionLuces();
 
     void porDefecto();
+
+    void objetoSeleccionado(int objSelec, Malla3D *obj);
+    void coloresSeleccionables();
+
+    void seleccionPixel();
 
 };
 #endif

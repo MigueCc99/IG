@@ -379,3 +379,17 @@ void Malla3D::asignaCentro(float cord_centro[]){
 void Malla3D::setSeleccionado(bool selecc){
   seleccionado = selecc;
 }
+
+void Malla3D::cambiarColor(float R, float G, float B)
+{
+   // Vaciamos los vectores de colores
+   c.clear();
+
+   // Color para el vector de colores
+   Tupla3f color(R, G, B);
+
+   for(int i = 0; i < v.size(); i++)
+      c.push_back(color);
+
+   c.push_back(color); 
+}

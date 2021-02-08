@@ -1,150 +1,172 @@
 #include "camara.h"
-#include "aux.h"
 
-Camara::Camara(Tupla3f eye, Tupla3f at, Tupla3f up, int tipo, float left, float right, float near, float far, float top, float bottom){
-  this->eye = eye;
-  this->at = at;
-  this->up = up;
-  this->tipo = tipo;
-  this->left = left;
-  this->right = right;
-  this->near = near;
-  this->far = far;
-  this->top = top;
-  this->bottom = bottom;
-}
-void Camara::rotarXExaminar(float angle){
-  eye = eye - at;
+// Constructor por defecto
+Camara::Camara(){};
 
-  float eje_y = cos(angle)*eye(1) - sin(angle)*eye(2);
-  float eje_z = sin(angle)*eye(1) + cos(angle)*eye(2);
+// Constructor por parámetros
+Camara::Camara(Tupla3f eye, Tupla3f at, Tupla3f up, int tipo, float alto, float ancho)
+{
+    this->eye = eye;
+    this->at = at;
+    this->up = up.normalized();
+    this->tipo = tipo;
+    this->left = alto/2;
+    this->top = ancho/2;
+    this->near = 50;
+    this->far = 2500;
+    this->fovY = atan(left/near)*(180/M_PI)*2;
+    this->aspect = ancho/alto;
 
-  eye(1) = eje_y; eye(2) = eje_z;
+    // Vector director
+    this->vectorDirector = at - eye;
 
-  eye = eye + at;
-}
-void Camara::rotarYExaminar(float angle){
-  eye = eye - at;
+    // Eje X. Producto vectorial entre el vector director y up.
+    this->ejeX = vectorDirector.cross(up);
+    this->ejeX = this->ejeX.normalized();
 
-  float eje_x = cos(angle)*eye(0) + sin(angle)*eye(2);
-  float eje_z = -sin(angle)*eye(0) + cos(angle)*eye(2);
-
-  eye(0) = eje_x; eye(2) = eje_z;
-
-  eye = eye + at;
-}
-void Camara::rotarZExaminar(float angle){
-  eye = eye - at;
-
-  float eje_x = cos(angle)*eye(0) - sin(angle)*eye(1);
-  float eje_y = sin(angle)*eye(0) + cos(angle)*eye(1);
-
-  eye(0) = eje_x; eye(1) = eje_y;
-
-  eye = eye + at;
-}
-void Camara::rotarXFirstPerson(float angle){
-  at = at - eye;
-
-  float eje_y = cos(angle)*at(1) - sin(angle)*at(2);
-  float eje_z = sin(angle)*at(1) + cos(angle)*at(2);
-
-  at(1) = eje_y; at(2) = eje_z;
-
-  at = at + eye;
-}
-void Camara::rotarYFirstPerson(float angle){
-  at = at - eye;
-
-  float eje_x = cos(angle)*at(0) + sin(angle)*at(2);
-  float eje_z = -sin(angle)*at(0) + cos(angle)*at(2);
-
-  at(0) = eje_x; at(2) = eje_z;
-
-  at = at + eye;
-}
-void Camara::rotarZFirstPerson(float angle){
-  at = at - eye;
-
-  float eje_x = cos(angle)*at(0) - sin(angle)*at(1);
-  float eje_y = sin(angle)*at(0) + cos(angle)*at(1);
-
-  at(0) = eje_x; at(1) = eje_y;
-}
-void Camara::mover(float x,float y,float z){}
-void Camara::zoom(float factor){
-  right = right*factor;
-  left = left*factor;
-  top = top * factor;
-  bottom = bottom * factor;
+    // Eje Y. Producto vectorial entre ejeX y vector director.
+    this->ejeY = ejeX.cross(vectorDirector);
+    this->ejeY = this->ejeY.normalized();
 }
 
-void Camara::setObserver(){
-  gluLookAt(eye(0),eye(1),eye(2),at(0),at(1),at(2),up(0),up(1),up(2));
+// Rotar en X
+void Camara::rotarXExaminar(float angle)
+{
+    rotarExaminar(angle, 'x');
 }
 
-void Camara::setProyeccion(){
-  switch (tipo){
-    case 0:
-      glOrtho(left,right,bottom,top,near,far);
-      break;
-    case 1:
-      glFrustum(left,right,bottom,top,near,far);
-  }
+// Rotar en Y
+void Camara::rotarYExaminar(float angle)
+{
+    rotarExaminar(angle, 'y');
 }
 
-Tupla3f Camara::getEye(){
-  return eye;
-}
-Tupla3f Camara::getAt(){
-  return at;
-}
-Tupla3f Camara::getUp(){
-  return up;
-}
-float Camara::getLeft(){
-  return left;
-}
-float Camara::getRight(){
-  return right;
-}
-float Camara::getNear(){
-  return near;
-}
-float Camara::getFar(){
-  return far;
-}
-float Camara::getTop(){
-  return top;
-}
-float Camara::getBottom(){
-  return bottom;
+// Rotar en X en primera persona
+void Camara::rotarXFirstPerson(float angle)
+{
+    rotarFirstPerson(angle, 'x');
 }
 
-void Camara::setEye(Tupla3f eye){
-  this->eye = eye;
+// Rotar en Y en primera persona
+void Camara::rotarYFirstPerson(float angle)
+{
+    rotarFirstPerson(angle, 'y');
 }
-void Camara::setAt(Tupla3f at){
-  this->at = at;
+
+// Trasladar la cámara
+void Camara::mover(float x, float y, float z)
+{
+    this->eye = {x, y, z};
 }
-void Camara::setUp(Tupla3f up){
-  this->up = up;
+
+// Zoom en la escena
+void Camara::zoom(float factor)
+{   
+    if(this->fovY-factor >= 1 && this->fovY-factor <= 180)
+        this->fovY -= factor;
+
+    this->left = tan((this->fovY/2)*(M_PI/180)) * this->near;
+    this->top = this->left * this->aspect;
 }
-void Camara::setLeft(float left){
-  this->left = left;
+
+// Observador de la escena
+void Camara::setObserver()
+{
+    gluLookAt(eye[0], eye[1], eye[2],
+               at[0], at[1], at[2],
+               up[0], up[1], up[2]);
 }
-void Camara::setRight(float right){
-  this->right = right;
+
+// Proyección de la escena
+void Camara::setProyeccion()
+{
+    if(this->tipo == 1)
+        gluPerspective(fovY, aspect, near, far);
+    
+    else if(this->tipo == 0)
+        glOrtho(-left, left, -top, top, near, far);
 }
-void Camara::setNear(float near){
-  this->near = near;
+
+// Rotación en primera persona
+void Camara::rotarFirstPerson(float angle, char eje)
+{
+    // Tuplas auxiliares
+    Tupla3f newAt, newUp;
+
+    // Vector dirección
+    this->vectorDirector = at - eye;
+
+    // Trabajamos mejor en radianes
+    angle *= (M_PI/180);
+
+    // Usamos la matriz de rotación
+    if(eje == 'x'){
+        newAt = matrizRotacion(ejeY, vectorDirector, angle);
+        newUp = matrizRotacion(ejeY, up, angle);
+        ejeX = matrizRotacion(ejeY, ejeX, angle);
+    }
+
+    else if(eje == 'y'){
+        newAt = matrizRotacion(ejeX, vectorDirector, angle);
+        newUp = matrizRotacion(ejeX, up, angle);
+        ejeY = matrizRotacion(ejeX, ejeY, angle);        
+    }
+
+    // Cambiamos hacia donde estamos mirando
+    this->at = newAt + eye;
+
+    // Actualizamos Up
+    this->up = newUp;
 }
-void Camara::setFar(float far){
-  this->far = far;
+
+// Rotación en torno a un objeto
+void Camara::rotarExaminar(float angle, char eje)
+{
+    // Tuplas auxiliares
+    Tupla3f newAt, newUp, vD;
+
+    // Vector dirección
+    vD = eye - at;
+
+    // Trabajamos mejor en radianes
+    angle *= (M_PI/180);
+
+    // Usamos la matriz de rotación
+    if(eje == 'x'){
+        vD = matrizRotacion(ejeY, vD, angle);
+        newUp = matrizRotacion(ejeY, up, angle);
+        ejeX = matrizRotacion(ejeY, ejeX, angle);
+    }
+
+    else if(eje == 'y'){
+        vD = matrizRotacion(ejeX, vD, angle);
+        newUp = matrizRotacion(ejeX, up, angle);
+        ejeY = matrizRotacion(ejeX, ejeY, angle);        
+    }
+
+    // Cambiamos hacia donde estamos mirando
+    this->eye = at + vD;
+
+    // Actualizamos Up
+    this->up = newUp;
 }
-void Camara::setTop(float top){
-  this->top = top;
-}
-void Camara::setBottom(float bottom){
-  this->bottom = bottom;
+
+// Matriz de rotación
+Tupla3f Camara::matrizRotacion(Tupla3f eje, Tupla3f vec, float angle)
+{
+    Tupla3f res;
+
+    res[0] = (cos(angle) + eje[0] * (eje[0] * (1-cos(angle)))) * vec[0] +
+             (eje[0] * (eje[1] * (1-cos(angle))) - (eje[2]*sin(angle))) * vec[1] +
+             (eje[0] * (eje[2] * (1-cos(angle))) + (eje[1]*sin(angle))) * vec[2];
+
+    res[1] = (eje[1] * (eje[0] * (1-cos(angle))) + eje[2] * sin(angle)) * vec[0] +
+             (cos(angle) + eje[1] * (eje[1] * (1-cos(angle)))) * vec[1] +
+             (eje[1] * (eje[2] * (1-cos(angle))) - (eje[0]*sin(angle))) * vec[2];
+
+    res[2] = (eje[2] * (eje[0] * (1-cos(angle))) - eje[1] * sin(angle)) * vec[0] +
+             (eje[2] * (eje[1] * (1-cos(angle))) + (eje[0]*sin(angle))) * vec[1] +
+             (cos(angle) + eje[2] * (eje[2] * (1-cos(angle)))) * vec[2];
+
+    return res;
 }
